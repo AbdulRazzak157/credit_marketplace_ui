@@ -1,0 +1,93 @@
+@import "tailwindcss";
+
+
+/* in src/index.css or src/main.css */
+@import 'react-phone-number-input/style.css';
+
+:root {
+    --primary: #000000;
+    --secondary: #F8F8FF;
+    --secondary: #F1F2F6;
+    --tertiary: #787687;
+    --label: #64748B;
+    --heading: #1E293B;
+}
+
+button {
+    cursor: pointer;
+}
+
+html,body {
+  font-family: 'Inter', sans-serif;
+}
+
+html,body{
+  margin: 0px !important
+}
+
+.phone-input input:focus {
+  outline: none !important;
+  box-shadow: none !important;
+}
+
+.overflow-x-custom::-webkit-scrollbar {
+  height: 0px;
+}
+.shadow-custom-sm {
+    box-shadow: 0 0 2px rgba(0, 0, 0, 0.15);
+}
+
+.shadow-custom-md {
+    box-shadow: 0 0 4px rgba(0, 0, 0, 0.15);
+}
+
+.modal-bg-styles {
+  position: fixed;
+  inset: 0;
+  background-color: #00000080;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100vh;
+  overflow: auto;
+  z-index: 100;
+  margin: 0px !important;
+}
+
+.emailOTPStyles {
+  color: #5046E4;
+  font-size: 16px;
+  padding-top: 12px;
+  float: inline-end;
+}
+
+.overflow-y-custom::-webkit-scrollbar {
+  width: 1px;
+}
+
+@keyframes dotBounceScale {
+
+    0%,
+    100% {
+        transform: scale(0);
+        opacity: 0.4;
+    }
+
+    50% {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+.dot-bounce {
+    animation: dotBounceScale 1s infinite ease-in-out;
+}
+
+.dot-bounce.delay-1 {
+    animation-delay: 0.4s;
+}
+
+.dot-bounce.delay-2 {
+    animation-delay: 0.8s;
+}

@@ -1,0 +1,103 @@
+
+
+
+import { Children, createContext, useContext, useEffect, useState } from "react";
+import { auth } from "../firebase";
+import { onAuthStateChanged, signInWithEmailAndPassword, signOut } from "firebase/auth";
+import API_URL from "../api/apiConfig";
+
+const AuthContext = createContext()
+
+export function AuthContextProvider({ children }) {
+
+    const [loading, setLoading] = useState(true);
+    const [currentUser, setCurrentUser] = useState(null);
+    const [userProfile, setUserProfile] = useState(null);
+
+
+    // Login
+    const login = (email, password) => {
+        return signInWithEmailAndPassword(auth, email, password);
+    };
+
+    // Logout
+    const logout = () => {
+        setCurrentUser(null);
+        return signOut(auth);
+    };
+
+    const getAccessToken = async (refresh = false) => {
+        if (!currentUser) return null;
+        try {
+            const token = await currentUser.getIdToken(refresh);
+            return token;
+        } catch (error) {
+            console.error("Error getting access token:", error);
+            return null;
+        }
+    };
+
+    const getUserProfile = async (user) => {
+        try {
+            const response = await fetch(`${API_URL.profile.getUserProfile}`, {
+                method: "GET",
+                headers: {
+                    "Authorization": `Bearer ${user?.accessToken}`
+                }
+            });
+            if (!response.ok) {
+                const errorResult = await response.json();
+                throw new Error(errorResult?.message);
+            }
+            const result = await response.json();
+            console.log("user profile: ",result);
+
+            if (result?.response) {
+                setUserProfile(result?.response);
+            }
+        } catch (error) {
+            console.log("Error in fetch user account profile : ", error?.message);
+        }
+    }
+
+
+
+    useEffect(() => {
+
+        const unsubscribe = onAuthStateChanged(auth, async (user) => {
+            
+            setLoading(false)
+            console.log("user: ", user);
+            if (user) {
+                setCurrentUser(user);
+                await getUserProfile(user);
+            }
+
+        });
+
+        return () => unsubscribe();
+
+    }, []);
+
+
+    const value = {
+        loading,
+        currentUser,
+        userProfile,
+        setUserProfile,
+        login,
+        logout,
+        getAccessToken
+    };
+
+
+    return (
+        <AuthContext.Provider value={value}>
+            {!loading && children}
+        </AuthContext.Provider>
+    );
+}
+
+export function useAuth() {
+    return useContext(AuthContext);
+}

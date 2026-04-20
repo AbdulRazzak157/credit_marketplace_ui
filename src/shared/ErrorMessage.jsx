@@ -1,0 +1,6 @@
+
+export default function ErrorMessage({ message = "*This field is required" }) {
+    return (
+        <p className="text-sm text-red-600">{message}</p>
+    )
+}
