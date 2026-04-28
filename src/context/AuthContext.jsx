@@ -39,22 +39,26 @@ export function AuthContextProvider({ children }) {
 
     const getUserProfile = async (user) => {
         try {
-            const response = await fetch(`${API_URL.profile.getUserProfile}`, {
+            const token = await user.accessToken;
+            const response = await fetch(API_URL.profile.getUserProfile, {
                 method: "GET",
                 headers: {
-                    "Authorization": `Bearer ${user?.accessToken}`
+                    Authorization: `Bearer ${token}`,
+                    'Content-Type': 'application/json'
                 }
             });
+
             if (!response.ok) {
                 const errorResult = await response.json();
                 throw new Error(errorResult?.message);
             }
+
             const result = await response.json();
-            console.log("user profile: ",result);
 
             if (result?.response) {
                 setUserProfile(result?.response);
             }
+
         } catch (error) {
             console.log("Error in fetch user account profile : ", error?.message);
         }
@@ -65,9 +69,8 @@ export function AuthContextProvider({ children }) {
     useEffect(() => {
 
         const unsubscribe = onAuthStateChanged(auth, async (user) => {
-            
+
             setLoading(false)
-            console.log("user: ", user);
             if (user) {
                 setCurrentUser(user);
                 await getUserProfile(user);
