@@ -134,7 +134,8 @@ const LeadOverviewParent = () => {
                     <div className='flex items-center gap-4'>
                         <div className='text-xs text-gray-400'>{leadData?.customId}</div>
                         <span className="min-w-1 min-h-1 rounded-full bg-gray-500" />
-                        <div className='text-xs text-gray-400'>{leadData?.email}</div><span className="min-w-1 min-h-1 rounded-full bg-gray-500" />
+                        <div className='text-xs text-gray-400'>{leadData?.email}</div>
+                        <span className="min-w-1 min-h-1 rounded-full bg-gray-500" />
                         <div className='text-xs text-gray-400'>{formatPhone(leadData?.mobileNumber)}</div>
                     </div>
                 </div>
