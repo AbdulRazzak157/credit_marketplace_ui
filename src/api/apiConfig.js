@@ -1,3 +1,4 @@
+import { UpdateLoanDetailsModal } from "../components/UpdateLoanDetailsModal";
 
 
 export const type = "DEV";
@@ -7,7 +8,12 @@ let API_BASE_URL;
 
 if (type === 'DEV') {
     // API_BASE_URL = "http://localhost:4000";
-    API_BASE_URL = "https://57gph04g-4000.inc1.devtunnels.ms";
+
+    // hari
+    API_BASE_URL = "https://b3fn5jvm-4000.inc1.devtunnels.ms"
+
+    // razzak
+    // API_BASE_URL = "https://57gph04g-4000.inc1.devtunnels.ms";
 }
 
 
@@ -41,6 +47,7 @@ const API_URL = {
         getLenderOverview: (lenderId) => `${API_BASE_URL}/api/v1/lenders/${lenderId}/details`,
         updateLenderDetails: (lenderId) => `${API_BASE_URL}/api/v1/lenders/${lenderId}`,
         getLenderProducts: (lenderId) => `${API_BASE_URL}/api/v1/lender-products/${lenderId}/list`,
+        getlenderLeadMetrics: (lenderId) => `${API_BASE_URL}/api/v1/lenders/${lenderId}/lender-lead-metrics`,
     },
 
     productManagement: {
@@ -68,6 +75,12 @@ const API_URL = {
         updateLeadStatus: (leadId) => `${API_BASE_URL}/api/v1/leads/${leadId}/status`,
         getLeadStaffList: `${API_BASE_URL}/api/v1/executives/names`,
         assignLeadToStaff: (leadId) => `${API_BASE_URL}/api/v1/leads/${leadId}/assignment`,
+        getLeadOverview: (leadId) => `${API_BASE_URL}/api/v1/leads/${leadId}/details`,
+        updateLoanDetails: (leadId) => `${API_BASE_URL}/api/v1/leads/${leadId}/credit-details`,
+        updateRemarkDetails: (leadId) => `${API_BASE_URL}/api/v1/leads/${leadId}/remarks`,
+        getBureauReport: (leadId) => `${API_BASE_URL}/api/v1/leads/${leadId}/bureau-report`,
+        getUpdateBureauReport: (leadId) => `${API_BASE_URL}/api/v1/leads/${leadId}/update-bureau-report`,
+        getLeadMatchedProducts: (leadId) => `${API_BASE_URL}/api/v1/leads/${leadId}/matched-products/details`
     }
 
 };

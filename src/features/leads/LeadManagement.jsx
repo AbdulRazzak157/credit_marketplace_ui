@@ -171,7 +171,9 @@ const LeadManagement = () => {
       name: "Lead ID",
       selector: (row) => (
         <div className='text-sm text-blue-600 underline cursor-pointer'>
+          <Link to={`/leads/view/${row?.leadId}`}>
           {row?.leadId}
+          </Link>
         </div>
       ),
       center: "true",

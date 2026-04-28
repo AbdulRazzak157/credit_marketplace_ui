@@ -2,8 +2,12 @@ import { Icon } from '@iconify/react'
 import React from 'react'
 import assets from '../constants/assets.constant'
 import QuickActions from './QuickActions'
+import { useAuth } from '../context/AuthContext'
 
 const Header = ({ onMenuClick }) => {
+
+    const { userProfile } = useAuth();    
+
     return (
         <div className='relative'>
             <header className='fixed top-0 left-0 w-full h-16 bg-white shadow flex justify-between items-center px-4 xs:px-6 md:px-10 z-50'>
@@ -30,8 +34,8 @@ const Header = ({ onMenuClick }) => {
                     </div>
                     <div className='flex justify-end items-center gap-4'>
                         <div className='flex flex-col items-end max-lg:hidden'>
-                            <div className="text-sm text-(--primary) font-semibold">Mohammed Qureshi</div>
-                            <div className="text-[#64646E] text-xs">SUB987645678637</div>
+                            <div className="text-sm text-(--primary) font-semibold">{userProfile?.userName}</div>
+                            <div className="text-[#64646E] text-xs">{userProfile?.userCustomId}</div>
                         </div>
                         <h1 className='flex justify-center items-center text-white bg-(--primary) w-9 h-9 sm:w-10 sm:h-10 rounded-full capitalize'>
                             <span>R</span>

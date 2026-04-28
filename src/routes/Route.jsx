@@ -43,6 +43,7 @@ import LeadOverview from "../features/leads/view/LeadOverview";
 import LeadBureau from "../features/leads/view/LeadBureau";
 import LeadProducts from "../features/leads/view/LeadProducts";
 import LeadActivity from "../features/leads/view/LeadActivity";
+import LenderLeadMetrics from "../features/lenders/LenderLeadMetrics";
 
 export const router = createBrowserRouter([
     {
@@ -110,6 +111,7 @@ export const router = createBrowserRouter([
                                 element: <LenderViewParent />,
                                 children: [
                                     { path: "", element: <LenderOverview /> },
+                                    { path: "lender-lead-metrics", element: <LenderLeadMetrics /> },
                                     {
                                         path: "products", element: <LenderProductParentTab />,
                                         children: [

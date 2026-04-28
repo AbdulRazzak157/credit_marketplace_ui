@@ -108,7 +108,7 @@ const LeadOverviewParent = () => {
     }
     return (
         <div className='space-y-4'>
-            <NavigationHeadline content="Back" to="/lenders" />
+            <NavigationHeadline content="Back" to="/leads" />
 
             <div className='bg-white px-2 py-4 sm:px-8 flex flex-col gap-6 rounded-md'>
                 <div className='space-y-2'>
@@ -119,6 +119,8 @@ const LeadOverviewParent = () => {
                             <LeadSource source={leadData?.sourceChannel} />
                         </div>
                         <div className='flex items-center gap-2'>
+                            {leadData.status !== "DISBURSED" && 
+                            <>
                             <div onClick={() => setIsStatusModalOpen(true)} className='flex items-center gap-x-1.5 py-1 px-3 rounded-lg bg-gray-100 border border-gray-300 cursor-pointer'>
                                 <Icon icon="lets-icons:edit-fill" width="16" height="16" />
                                 <span className='text-xs font-semibold text-[#232323]'>Update Status</span>
@@ -129,6 +131,8 @@ const LeadOverviewParent = () => {
                                 </span>
                                 <span className='text-xs font-semibold  text-white'>Assign</span>
                             </div>
+                            </>
+                            }
                         </div>
                     </div>
                     <div className='flex items-center gap-4'>
@@ -159,7 +163,7 @@ const LeadOverviewParent = () => {
                             to="products"
                             end
                         >
-                            Products
+                            Lenders
                         </NavLink>
                         <NavLink
                             className={({ isActive }) => `font-bold border-b-2 pb-1 ${isActive ? "text-(--primary) border-(--primary)" : "text-gray-500 border-transparent"}`}

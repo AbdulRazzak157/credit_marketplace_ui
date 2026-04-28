@@ -8,10 +8,10 @@ import CustomThreeDotsLoader from "../shared/CustomThreeDotsLoader";
 
 const STATUS_COLORS = {
     NEW: { label: "New", color: "#6B21A8", bg: "#F3E8FF", dot: "#9333EA" },
-    IN_REVIEW: { label: "In Review", color: "#B45309", bg: "#FEF3C7", dot: "#D97706" },
-    APPROVED: { label: "Approved", color: "#0E8A3E", bg: "#E6F4ED", dot: "#12A84C" },
+    IN_REVIEW: { label: "Under Review", color: "#1B4FD8", bg: "#EEF2FF", dot: "#3B72F6" },
+    // APPROVED: { label: "Approved", color: "#0E8A3E", bg: "#E6F4ED", dot: "#12A84C" },
     REJECTED: { label: "Rejected", color: "#C0280C", bg: "#FEE8E5", dot: "#DC2626" },
-    DISBURSED: { label: "Disbursed", color: "#1B4FD8", bg: "#EEF2FF", dot: "#3B72F6" },
+    DISBURSED: { label: "Disbursed / Approved", color: "#0E8A3E", bg: "#E6F4ED", dot: "#12A84C" },
 };
 
 function StatusBadge({ statusKey }) {

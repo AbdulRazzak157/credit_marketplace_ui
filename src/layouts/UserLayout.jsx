@@ -13,7 +13,7 @@ const UserLayout = () => {
     return (
         <div className='h-screen flex flex-col'>
             {/* Fixed Header */}
-            <Header onMenuClick={() => setIsMenuOpen(true)} />
+            <Header onMenuClick={() => setIsMenuOpen(true)} />``
 
             {/* MobileSidebar */}
             <MobileSidebar
