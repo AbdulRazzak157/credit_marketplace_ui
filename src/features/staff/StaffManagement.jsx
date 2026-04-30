@@ -107,7 +107,7 @@ const StaffManagement = () => {
     }
   }
 
-  const { data: staffData, isLoading:isStaffLoading, refetch } = useQuery({
+  const { data: staffData, isLoading: isStaffLoading, refetch } = useQuery({
     queryKey: ["getStaffList", staffPage, debouncedSearchKey, rowsPerPage],
     queryFn: getStaffList
   });
@@ -199,7 +199,9 @@ const StaffManagement = () => {
       name: "Staff ID",
       selector: (row) => (
         <div className='text-sm text-blue-600 underline cursor-pointer'>
-          {row?.customId}
+          <Link to={`view/${row?.customId}`}>
+            {row?.customId}
+          </Link>
         </div>
       ),
       center: "true",

@@ -10,7 +10,8 @@ import { useAuth } from '../../context/AuthContext';
 import useDebounce from '../../hooks/useDebounce';
 import { Link } from 'react-router-dom';
 import ActionButton from '../../components/buttons/ActionButton';
-import { formatINRShort, normalizeSentence } from '../../helpers';
+import { formatINRShort, formatSentence, normalizeSentence } from '../../helpers';
+import { getBureauScoreColor } from '../../shared/utils';
 
 const ProductManagement = () => {
   const [searchKey, setSearchKey] = useState("");
@@ -210,22 +211,22 @@ const ProductManagement = () => {
       name: "Product & Code",
       selector: (row) => (
         <div className='space-y-1 py-1'>
-          <div className='font-semibold text-base'>{row?.productName}</div>
+          <div className='font-semibold text-sm' title={row?.productName}>{formatSentence(row?.productName)}</div>
           <div className='text-gray-500 text-xs'>{row?.productCode}</div>
         </div>
       ),
       // center: "true",
-      width: "150px"
+      width: "230px"
     },
     {
       name: "Lender",
       selector: (row) => (
-        <div className='text-sm font-semibold text-[#374151]'>
-          {row?.lenderEntityName}
+        <div className='text-sm font-semibold text-[#374151]' title={row?.lenderEntityName}>
+          {formatSentence(row?.lenderEntityName)}
         </div>
       ),
       center: "true",
-      width: "190px"
+      width: "250px"
     },
     {
       name: "Type",
@@ -250,7 +251,7 @@ const ProductManagement = () => {
     {
       name: "Product Amount",
       selector: (row) => (
-        <div className='text-[#374151] space-y-2'>
+        <div className='text-[#374151] space-y-2 mt-2'>
           <div className='flex gap-x-2 items-center font-semibold'>
             <span>{formatINRShort(row?.minAmount)}</span>-
             <span>{formatINRShort(row?.maxAmount)}</span>
@@ -276,13 +277,30 @@ const ProductManagement = () => {
     },
     {
       name: "Bureau Score",
-      selector: (row) => (
-        <div className='font-semibold text-green-600'>
-          {row?.bureauScore}+
-        </div>
-      ),
+      selector: (row) => {
+        const { dot, text } = getBureauScoreColor(+row?.bureauScore)
+        return (
+          <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+            {
+              row?.bureauScore === 0 ? "N/A" : (
+                <>
+                  <span style={{
+                    width: '8px', height: '8px',
+                    borderRadius: '50%',
+                    backgroundColor: dot,
+                    flexShrink: 0
+                  }} />
+                  <span style={{ color: text, fontWeight: 500, fontSize: '13px' }}>
+                    {row?.bureauScore}+
+                  </span>
+                </>
+              )
+            }
+          </div>
+        )
+      },
       center: "true",
-      width: "130px"
+      width: "140px"
     },
     {
       name: "Age",

@@ -9,6 +9,7 @@ import { FaEye } from "react-icons/fa";
 import { FaEyeSlash } from "react-icons/fa";
 import { getFirebaseErrorMessage } from '../../helpers/firebaseErrors';
 import CustomCircleLoader from '../../shared/CustomCircleLoader';
+import API_URL from '../../api/apiConfig';
 
 const Login = () => {
 
@@ -17,13 +18,14 @@ const Login = () => {
 
     const navigate = useNavigate();
 
-    const { login, loading } = useAuth();
+    const { login, loading, otpSession, setOtpSession, userEmail, setUserEmail } = useAuth();
 
     const { register, handleSubmit, formState: { errors, isSubmitting }, reset } = useForm();
 
     const showUserPassword = () => {
         setShowPassword((prev) => !prev);
     };
+    const { getAccessToken } = useAuth();
 
     console.log("loading : ", loading);
     if (loading) {
@@ -33,13 +35,33 @@ const Login = () => {
     const onSubmit = async (data) => {
         try {
             setIsLogging(true);
-            await new Promise(resolve => setTimeout(resolve, 3000));
-            await login(data.email, data.password);
-            reset();
-            setTimeout(() => {
-                toast.success("Logged in successfully");
-                navigate("/");
-            }, 800)
+            // await login(data.email, data.password);
+            const token = await getAccessToken();
+            const response = await fetch(`${API_URL.auth.login}`, {
+                method: "POST",
+                headers: {
+                    "Authorization": `Bearer ${token}`,
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    email: data.email,
+                    password: data?.password
+                })
+            });
+            if (!response.ok) {
+                const errorResult = await response.json();
+                throw new Error(errorResult?.message);
+            }
+            const result = await response.json();
+            const responseData = {
+                otpToken: result?.response?.otpSessionToken,
+                email: result?.response?.email,
+            }
+
+            setOtpSession(responseData.otpToken);
+            setUserEmail(responseData.email)
+
+            navigate("/login-verification");
         } catch (error) {
             toast.error(getFirebaseErrorMessage(error));
             console.error("Login error:", error);

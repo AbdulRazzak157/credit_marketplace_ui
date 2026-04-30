@@ -5,7 +5,7 @@ export const STATUS_COLORS = {
     IN_REVIEW: { label: 'In Review', color: '#B45309', bg: '#FEF3C7', dot: '#D97706' },
     APPROVED: { label: 'Approved', color: '#0E8A3E', bg: '#E6F4ED', dot: '#12A84C' },
     REJECTED: { label: 'Rejected', color: '#C0280C', bg: '#FEE8E5', dot: '#DC2626' },
-    DISBURSED: { label: 'Disbursed', color: '#1B4FD8', bg: '#EEF2FF', dot: '#3B72F6' },
+    DISBURSED: { label: 'Disbursed', color: '#0E8A3E', bg: '#E6F4ED', dot: '#12A84C' },
 };
 
 export function LeadStatus({ status }) {

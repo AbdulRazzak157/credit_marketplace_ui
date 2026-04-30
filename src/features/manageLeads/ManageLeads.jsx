@@ -216,7 +216,9 @@ const ManageLeads = () => {
             name: "Lead ID",
             selector: (row) => (
                 <div className='text-sm text-blue-600 underline cursor-pointer'>
-                    {row?.leadId}
+                    <Link to={`/leads/view/${row?.leadId}`}>
+                        {row?.leadId}
+                    </Link>
                 </div>
             ),
             center: "true",
@@ -241,7 +243,7 @@ const ManageLeads = () => {
                 </div>
             ),
             // center: "true",
-            width: "200px"
+            width: "230px"
         },
         {
             name: "Gender",
@@ -276,19 +278,25 @@ const ManageLeads = () => {
         },
         {
             name: "Customer Type",
-            selector: (row) => (
-                <div style={{
-                    backgroundColor: row.isNTC ? '#E6F1FB' : '#F1EFE8',
-                    color: row.isNTC ? '#0C447C' : '#444441',
-                    border: `0.5px solid ${row.isNTC ? '#85B7EB' : '#B4B2A9'}`,
-                    padding: '3px 10px',
-                    borderRadius: '20px',
-                    fontSize: '12px',
-                    fontWeight: 500,
-                }}>
-                    {row.customerType ? 'NTC' : 'Non NTC'}
+            selector: (row) => {
+                return <div>
+                    {
+                        row?.customerType === null ? (<div className='text-xs'>N/A</div>) : (
+                            <div style={{
+                                backgroundColor: row.customerType ? '#E6F1FB' : '#F1EFE8',
+                                color: row.customerType ? '#0C447C' : '#444441',
+                                border: `0.5px solid ${row.customerType ? '#85B7EB' : '#B4B2A9'}`,
+                                padding: '3px 10px',
+                                borderRadius: '20px',
+                                fontSize: '12px',
+                                fontWeight: 500,
+                            }}>
+                                {row.customerType ? 'NTC' : 'Non NTC'}
+                            </div>
+                        )
+                    }
                 </div>
-            ),
+            },
             center: "true",
             width: "170px"
         },
@@ -333,7 +341,9 @@ const ManageLeads = () => {
             name: "Top Match Products",
             selector: (row) => (
                 <div className={`font-semibold text-lg ${row?.matchedProducts && "text-blue-600 underline cursor-pointer"} `}>
-                    {row?.matchedProducts}
+                    <Link to={`/leads/view/${row?.leadId}/products`}>
+                        {row?.matchedProducts}
+                    </Link>
                 </div>
             ),
             center: "true",
@@ -381,7 +391,7 @@ const ManageLeads = () => {
             <div className='rounded-md grid grid-col-1 md:grid-cols-2 xl:grid-cols-3 gap-4'>
                 <ManageLeadCard value={manageLeadCards?.totalLeads} bgColor="bg-(--primary)" icon={<Icon icon="carbon:application" width="24" height="24" />} label="Total Leads" />
                 <ManageLeadCard value={manageLeadCards?.inReview} bgColor="bg-green-600" icon={<Icon icon="qlementine-icons:preview-16" width="16" height="16" />} label="In Review" />
-                <ManageLeadCard value={manageLeadCards?.approved} bgColor="bg-[#4DB0FF]" icon={<Icon icon="tdesign:user-checked-filled" width="24" height="24" />} label="Approved" />
+                {/* <ManageLeadCard value={manageLeadCards?.approved} bgColor="bg-[#4DB0FF]" icon={<Icon icon="tdesign:user-checked-filled" width="24" height="24" />} label="Approved" /> */}
                 <ManageLeadCard value={manageLeadCards?.rejected} bgColor="bg-[linear-gradient(180deg,_#FFA500_0%,_#EF4444_100%)]" icon={<Icon icon="fluent:person-error-20-regular" width="20" height="20" />} label="Rejected" />
                 <ManageLeadCard value={manageLeadCards?.disbursed} bgColor="bg-[#10B981]" icon={<Icon icon="tabler:transaction-rupee" width="24" height="24" />} label="Disbursed" />
                 <ManageLeadCard value={formatINRShort(+manageLeadCards?.amount)} bgColor="bg-[#10B981]" icon={<Icon icon="ic:baseline-currency-rupee" width="24" height="24" />} label="Disbursed Amount" />
@@ -499,12 +509,12 @@ const ManageLeads = () => {
                             options={[
                                 { label: "In Review", value: "IN_REVIEW" },
                                 { label: "Rejected", value: "REJECTED" },
-                                { label: "Approved", value: "APPROVED" },
+                                // { label: "Approved", value: "APPROVED" },
                                 { label: "Disbursed", value: "DISBURSED" },
                             ]}
                             value={selectedStatus || null}
                             onChange={(option) => setSelectedStatus(option)}
-                            placeholder="Ex: Approved"
+                            placeholder="Ex: Disbursed"
                             styles={reactSelectCustomStyles}
                             className="capitalize"
                             isClearable
@@ -567,7 +577,7 @@ const ManageLeads = () => {
                 <DataTableBase
                     columns={columns}
                     data={manageLeadData?.leads || []}
-                    progressPending={isLoading}
+                    progressPending={isLoading2}
                     pagination
                     paginationServer
                     paginationPerPage={10}

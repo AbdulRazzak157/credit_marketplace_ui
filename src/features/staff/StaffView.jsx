@@ -13,6 +13,7 @@ import API_URL from '../../api/apiConfig'
 import { useQuery } from '@tanstack/react-query'
 import CustomCircleLoader from '../../shared/CustomCircleLoader'
 import useDebounce from '../../hooks/useDebounce'
+import { LeadStatus } from '../../components/LeadStatus'
 
 const StaffView = () => {
     const { id } = useParams();
@@ -166,7 +167,9 @@ const StaffView = () => {
             name: "Lead ID",
             selector: (row) => (
                 <div className='text-sm text-blue-600 underline cursor-pointer' title="LD-PL-WEB-20260311-46B589BD">
-                    {row?.leadId}
+                    <Link to={`/leads/view/${row?.leadId}`}>
+                        {row?.leadId}
+                    </Link>
                 </div>
             ),
             center: "true",
@@ -238,10 +241,10 @@ const StaffView = () => {
             width: "250px"
         },
         {
-            name: "Action",
+            name: "Status",
             selector: (row) => (
-                <div className={`capitalize px-4 py-1 rounded-md text-xs font-medium ${row?.status && leadStatusColors[row?.status].bg} ${row?.action && leadStatusColors[row?.status].text}`}>
-                    {row?.status ? normalizeSentence(row?.status) : "-"}
+                <div>
+                    <LeadStatus status={row?.status} />
                 </div>
             ),
             width: "150px",
@@ -300,9 +303,15 @@ const StaffView = () => {
                 <ManageLeadCard value={staffDetails?.totalLeads} bgColor="bg-(--primary)" icon={<Icon icon="carbon:application" width="24" height="24" />} label="Total Leads" />
                 <ManageLeadCard value={staffDetails?.newLeads} bgColor="bg-blue-900" icon={<Icon icon="simple-icons:googleads" width="24" height="24" />} label="New Leads" />
                 <ManageLeadCard value={staffDetails?.inReviewLeads} bgColor="bg-green-600" icon={<Icon icon="qlementine-icons:preview-16" width="16" height="16" />} label="In Review" />
-                <ManageLeadCard value={staffDetails?.approvedLeads} bgColor="bg-[#4DB0FF]" icon={<Icon icon="tdesign:user-checked-filled" width="24" height="24" />} label="Approved" />
+                {/* <ManageLeadCard value={staffDetails?.approvedLeads} bgColor="bg-[#4DB0FF]" icon={<Icon icon="tdesign:user-checked-filled" width="24" height="24" />} label="Approved" /> */}
                 <ManageLeadCard value={staffDetails?.rejectedLeads} bgColor="bg-[linear-gradient(180deg,_#FFA500_0%,_#EF4444_100%)]" icon={<Icon icon="fluent:person-error-20-regular" width="20" height="20" />} label="Rejected" />
                 <ManageLeadCard value={staffDetails?.disbursedLeads} bgColor="bg-[#10B981]" icon={<Icon icon="tabler:transaction-rupee" width="24" height="24" />} label="Disbursed" />
+                <ManageLeadCard
+                    value={`₹${staffDetails?.disbursedAmount || 0}`}
+                    bgColor="bg-emerald-600"
+                    icon={<Icon icon="ic:baseline-currency-rupee" width="24" />}
+                    label="Disbursed Amount"
+                />
             </div>
             <div className='bg-white flex flex-col gap-8 rounded-md px-2 py-4 sm:px-4 sm:py-6 xl:py-6'>
                 <div className=''>

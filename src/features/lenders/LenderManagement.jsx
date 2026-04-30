@@ -15,6 +15,9 @@ import CustomCircleLoader from '../../shared/CustomCircleLoader'
 
 const LenderManagement = () => {
   const [searchKey, setSearchKey] = useState("");
+  const [rowsPerPage, setRowsPerPage] = useState(10);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [resetPaginationToggle, setResetPaginationToggle] = useState(false);
 
   const debouncedSearch = useDebounce(searchKey);
 
@@ -34,7 +37,7 @@ const LenderManagement = () => {
   const getLenderList = async () => {
     try {
       const token = await getAccessToken();
-      const response = await fetch(`${API_URL.lenderManagement.getLenderList}?search=${debouncedSearch}`, {
+      const response = await fetch(`${API_URL.lenderManagement.getLenderList}?search=${debouncedSearch}&page=${currentPage}&limit=${rowsPerPage}`, {
         method: "GET",
         headers: {
           "Authorization": `Bearer ${token}`
@@ -46,7 +49,7 @@ const LenderManagement = () => {
       }
       const result = await response.json();
       // console.log("subAdmin List: ", result.response.moduleKeys);
-      console.log("Result from get Lender List API: ", result.response);
+      // console.log("Result from get Lender List API: ", result.response);
 
       const data = result.response?.lenders?.map((lender) => {
         return {
@@ -65,7 +68,10 @@ const LenderManagement = () => {
         }
       })
 
-      return data;
+      return {
+        totalLenders: result?.response?.totalLenders,
+        lenders: data
+      };
 
     } catch (error) {
       console.log("Error in fetch lenders list : ", error?.message);
@@ -73,9 +79,31 @@ const LenderManagement = () => {
   }
 
   const { data: lenderList, isLoading } = useQuery({
-    queryKey: ["fetchLenderList", debouncedSearch],
+    queryKey: ["fetchLenderList",
+      currentPage,
+      rowsPerPage,
+      debouncedSearch
+    ],
     queryFn: getLenderList
   });
+
+  const clearAllFilters = () => {
+    console.log("Clear Filters");
+    setSearchKey("");
+    setCurrentPage(1);
+    setRowsPerPage(10);
+    setResetPaginationToggle(prev => !prev)
+  }
+
+
+  const handlePageChange = (page) => {
+    setCurrentPage(page);
+  };
+
+  const handlePerRowsChange = (newPerPage, page) => {
+    setRowsPerPage(newPerPage);
+    setCurrentPage(page);
+  };
 
   // if (isLoading) {
   //   return (
@@ -373,7 +401,9 @@ const LenderManagement = () => {
       name: "Lender ID",
       selector: (row) => (
         <div className='text-sm text-blue-600 underline cursor-pointer'>
-          {row?.lenderId}
+          <Link to={`view/${row?.lenderId}`}>
+            {row?.lenderId}
+          </Link>
         </div>
       ),
       center: "true",
@@ -502,34 +532,51 @@ const LenderManagement = () => {
           <AddButton icon="ph:bank" content="Onboard" to="onboard" />
         </button>
       </div>
+
+
       <div className='bg-white px-2 py-4 sm:px-4 rounded-md '>
-        <div className='flex flex-col gap-2 '>
-          <label htmlFor="search" className="text-[#232323] text-sm">Search by ID / Name / Reg No / CIN </label>
-          <div className="w-87.5 flex items-center gap-1 border border-[#d1d5db] rounded-md p-2 max-sm:w-full">
-            <IoSearch className="text-[#707B8F]"
-            />
-            <input
-              type="text"
-              value={searchKey}
-              onChange={(e) => setSearchKey(e.target.value)}
-              className="outline-none placeholder:text-[#707B8F] placeholder:text-xs w-full text-xs text-[#232323]"
-              placeholder="Ex: LDR989484949956"
-            />
+        <div className='flex items-end justify-between gap-4'>
+          <div className='flex flex-col gap-2'>
+            <label htmlFor="search" className="text-[#232323] text-sm">
+              Search by ID / Name / Reg No / CIN
+            </label>
+            <div className="w-87.5 flex items-center gap-1 border border-[#d1d5db] rounded-md p-2 max-sm:w-full">
+              <IoSearch className="text-[#707B8F]" />
+              <input
+                type="text"
+                value={searchKey}
+                onChange={(e) => setSearchKey(e.target.value)}
+                className="outline-none placeholder:text-[#707B8F] placeholder:text-xs w-full text-xs text-[#232323]"
+                placeholder="Ex: LDR989484949956"
+              />
+            </div>
           </div>
+
+          {/* Clear All Button — Right, aligned to input height */}
+          <button
+            onClick={clearAllFilters}
+            className='cursor-pointer py-2 px-4 rounded-md border border-gray-300 flex items-center gap-x-2'
+          >
+            <Icon icon="solar:eraser-linear" width="24" height="24" />
+            <span>Clear All</span>
+          </button>
         </div>
       </div>
+
+
       <div className='bg-white flex flex-col gap-4 rounded-md px-2 py-4 sm:px-4 sm:py-6'>
         <h2 className='text-xl text-(--primary) font-semibold'>List of Lenders</h2>
         <DataTableBase
           columns={columns}
-          data={lenderList || []}
+          data={lenderList?.lenders || []}
           progressPending={isLoading}
           pagination
           paginationServer
           paginationPerPage={10}
-        // paginationTotalRows={staffData?.staffList?.length}
-        // onChangePage={handlePageChange}
-        // onChangeRowsPerPage={handlePerRowsChange}
+          paginationTotalRows={lenderList?.totalLenders}
+          onChangePage={handlePageChange}
+          onChangeRowsPerPage={handlePerRowsChange}
+          paginationResetDefaultPage={resetPaginationToggle}
         />
       </div>
     </div>

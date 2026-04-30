@@ -1,0 +1,586 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&display=swap');
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: #f0f2f5;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .card {
+    background: #fff;
+    border-radius: 20px;
+    padding: 40px 44px;
+    width: 480px;
+    box-shadow: 0 4px 32px rgba(0,0,0,0.08);
+    animation: fadeUp 0.4s ease;
+  }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(18px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  .logo {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 28px;
+  }
+
+  .logo-icon {
+    width: 36px;
+    height: 36px;
+  }
+
+  .logo-text {
+    font-size: 18px;
+    font-weight: 700;
+    color: #111;
+    letter-spacing: -0.3px;
+  }
+
+  .logo-text sup {
+    font-size: 9px;
+    font-weight: 500;
+    color: #555;
+    vertical-align: super;
+  }
+
+  /* ── STEP INDICATOR ── */
+  .steps {
+    display: flex;
+    align-items: center;
+    gap: 0;
+    margin-bottom: 28px;
+  }
+  .step {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 12px;
+    font-weight: 600;
+    color: #bbb;
+  }
+  .step.active { color: #111; }
+  .step.done   { color: #22c55e; }
+  .step-dot {
+    width: 22px; height: 22px;
+    border-radius: 50%;
+    background: #e5e7eb;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 11px;
+    font-weight: 700;
+    color: #999;
+    flex-shrink: 0;
+  }
+  .step.active .step-dot { background: #111; color: #fff; }
+  .step.done   .step-dot { background: #22c55e; color: #fff; }
+  .step-line {
+    flex: 1;
+    height: 2px;
+    background: #e5e7eb;
+    margin: 0 8px;
+  }
+  .step-line.done { background: #22c55e; }
+
+  h1 {
+    font-size: 26px;
+    font-weight: 700;
+    color: #111;
+    letter-spacing: -0.5px;
+    margin-bottom: 6px;
+  }
+  .sub {
+    font-size: 13.5px;
+    color: #6b7280;
+    margin-bottom: 26px;
+    line-height: 1.5;
+  }
+
+  /* ── EMAIL DISPLAY ── */
+  .email-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: #f3f4f6;
+    border-radius: 8px;
+    padding: 8px 14px;
+    font-size: 13px;
+    font-weight: 500;
+    color: #374151;
+    margin-bottom: 24px;
+  }
+  .email-badge svg { color: #9ca3af; }
+
+  /* ── SECTION LABEL ── */
+  .section-label {
+    font-size: 13px;
+    font-weight: 600;
+    color: #374151;
+    margin-bottom: 10px;
+  }
+
+  /* ── REQUEST OTP BUTTON ── */
+  .btn-request {
+    width: 100%;
+    background: #111;
+    color: #fff;
+    border: none;
+    border-radius: 50px;
+    padding: 15px;
+    font-size: 15px;
+    font-weight: 600;
+    font-family: inherit;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    transition: background 0.18s, transform 0.1s;
+    margin-bottom: 0;
+  }
+  .btn-request:hover { background: #222; }
+  .btn-request:active { transform: scale(0.98); }
+  .btn-request:disabled {
+    background: #d1d5db;
+    cursor: not-allowed;
+    transform: none;
+  }
+
+  /* ── DIVIDER ── */
+  .divider {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin: 20px 0;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.4s;
+  }
+  .divider.show { opacity: 1; pointer-events: auto; }
+  .divider-line { flex: 1; height: 1px; background: #e5e7eb; }
+  .divider-text { font-size: 12px; color: #9ca3af; font-weight: 500; }
+
+  /* ── OTP SECTION ── */
+  .otp-section {
+    opacity: 0;
+    max-height: 0;
+    overflow: hidden;
+    transition: opacity 0.45s ease, max-height 0.45s ease;
+  }
+  .otp-section.show {
+    opacity: 1;
+    max-height: 300px;
+  }
+
+  .otp-row {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 14px;
+    justify-content: center;
+  }
+
+  .otp-box {
+    width: 52px;
+    height: 56px;
+    border: 1.8px solid #e5e7eb;
+    border-radius: 12px;
+    background: #f9fafb;
+    text-align: center;
+    font-size: 22px;
+    font-weight: 700;
+    color: #111;
+    font-family: inherit;
+    outline: none;
+    transition: border-color 0.18s, background 0.18s, box-shadow 0.18s;
+    caret-color: #111;
+  }
+  .otp-box:focus {
+    border-color: #111;
+    background: #fff;
+    box-shadow: 0 0 0 3px rgba(17,17,17,0.08);
+  }
+  .otp-box.filled {
+    border-color: #111;
+    background: #fff;
+  }
+  .otp-box.error {
+    border-color: #ef4444;
+    background: #fef2f2;
+  }
+
+  .otp-meta {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 18px;
+  }
+  .otp-timer {
+    font-size: 12.5px;
+    color: #6b7280;
+  }
+  .otp-timer span { font-weight: 700; color: #111; }
+  .resend-btn {
+    font-size: 12.5px;
+    font-weight: 600;
+    color: #6b7280;
+    background: none;
+    border: none;
+    cursor: not-allowed;
+    font-family: inherit;
+    transition: color 0.2s;
+  }
+  .resend-btn.active { color: #111; cursor: pointer; }
+  .resend-btn.active:hover { color: #e11d48; }
+
+  /* ── VERIFY BUTTON ── */
+  .btn-verify {
+    width: 100%;
+    background: #111;
+    color: #fff;
+    border: none;
+    border-radius: 50px;
+    padding: 15px;
+    font-size: 15px;
+    font-weight: 600;
+    font-family: inherit;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    transition: background 0.18s, transform 0.1s;
+  }
+  .btn-verify:hover:not(:disabled) { background: #222; }
+  .btn-verify:active:not(:disabled) { transform: scale(0.98); }
+  .btn-verify:disabled { background: #d1d5db; cursor: not-allowed; }
+
+  /* ── SUCCESS STATE ── */
+  .success-overlay {
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 20px 0 10px;
+    animation: fadeUp 0.4s ease;
+  }
+  .success-overlay.show { display: flex; }
+  .success-icon {
+    width: 60px; height: 60px;
+    background: #111;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    margin-bottom: 16px;
+    animation: pop 0.35s cubic-bezier(0.175,0.885,0.32,1.275);
+  }
+  @keyframes pop {
+    from { transform: scale(0.5); opacity: 0; }
+    to   { transform: scale(1);   opacity: 1; }
+  }
+  .success-title { font-size: 20px; font-weight: 700; color: #111; margin-bottom: 6px; }
+  .success-sub { font-size: 13px; color: #6b7280; }
+
+  /* ── ERROR MSG ── */
+  .error-msg {
+    font-size: 12.5px;
+    color: #ef4444;
+    margin-bottom: 12px;
+    text-align: center;
+    min-height: 18px;
+    font-weight: 500;
+  }
+
+  /* ── SPINNER ── */
+  .spinner {
+    width: 18px; height: 18px;
+    border: 2.5px solid rgba(255,255,255,0.4);
+    border-top-color: #fff;
+    border-radius: 50%;
+    animation: spin 0.7s linear infinite;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  .arrow { font-size: 16px; }
+</style>
+</head>
+<body>
+
+<div class="card" id="mainCard">
+  <!-- Logo -->
+  <div class="logo">
+    <svg class="logo-icon" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M8 6h12c4 0 7 3 7 7s-3 7-7 7H8V6z" fill="#111"/>
+      <path d="M8 20h8l8 10H8V20z" fill="#111" opacity="0.15"/>
+      <path d="M14 13l6 10" stroke="#e11d48" stroke-width="2.5" stroke-linecap="round"/>
+    </svg>
+    <span class="logo-text">Payinstacard<sup>®</sup></span>
+  </div>
+
+  <!-- Main content -->
+  <div id="mainContent">
+    <!-- Steps -->
+    <div class="steps">
+      <div class="step done" id="step1">
+        <div class="step-dot">✓</div>
+        <span>Login</span>
+      </div>
+      <div class="step-line done" id="line1"></div>
+      <div class="step active" id="step2">
+        <div class="step-dot">2</div>
+        <span>Verify OTP</span>
+      </div>
+      <div class="step-line" id="line2"></div>
+      <div class="step" id="step3">
+        <div class="step-dot">3</div>
+        <span>Access</span>
+      </div>
+    </div>
+
+    <h1>Two-Factor Auth</h1>
+    <p class="sub">We'll send a one-time password to your registered email for secure access.</p>
+
+    <!-- Email badge -->
+    <div class="email-badge">
+      <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m2 7 10 7 10-7"/></svg>
+      abdulrazzak@skygoalnext.com
+    </div>
+
+    <!-- Request OTP -->
+    <div class="section-label">Request your OTP</div>
+    <button class="btn-request" id="requestBtn" onclick="requestOTP()">
+      <span id="requestBtnText">Send OTP</span>
+      <span class="arrow" id="requestArrow">→</span>
+    </button>
+
+    <!-- Divider -->
+    <div class="divider" id="divider">
+      <div class="divider-line"></div>
+      <span class="divider-text">Enter the 6-digit code below</span>
+      <div class="divider-line"></div>
+    </div>
+
+    <!-- OTP Section (revealed after request) -->
+    <div class="otp-section" id="otpSection">
+      <div class="section-label">Verification Code</div>
+      <div class="otp-row" id="otpRow">
+        <input class="otp-box" maxlength="1" type="text" inputmode="numeric" pattern="[0-9]" id="otp0">
+        <input class="otp-box" maxlength="1" type="text" inputmode="numeric" pattern="[0-9]" id="otp1">
+        <input class="otp-box" maxlength="1" type="text" inputmode="numeric" pattern="[0-9]" id="otp2">
+        <input class="otp-box" maxlength="1" type="text" inputmode="numeric" pattern="[0-9]" id="otp3">
+        <input class="otp-box" maxlength="1" type="text" inputmode="numeric" pattern="[0-9]" id="otp4">
+        <input class="otp-box" maxlength="1" type="text" inputmode="numeric" pattern="[0-9]" id="otp5">
+      </div>
+
+      <div class="otp-meta">
+        <span class="otp-timer">Expires in <span id="timerVal">2:00</span></span>
+        <button class="resend-btn" id="resendBtn" onclick="resendOTP()">Resend OTP</button>
+      </div>
+
+      <div class="error-msg" id="errorMsg"></div>
+
+      <button class="btn-verify" id="verifyBtn" disabled onclick="verifyOTP()">
+        <span id="verifyBtnText">Verify OTP</span>
+        <span class="arrow" id="verifyArrow">→</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- Success State -->
+  <div class="success-overlay" id="successOverlay">
+    <div class="success-icon">
+      <svg width="28" height="28" fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
+        <path d="M20 6L9 17l-5-5"/>
+      </svg>
+    </div>
+    <div class="success-title">Verified!</div>
+    <p class="success-sub">Login token generated. Redirecting to dashboard…</p>
+  </div>
+</div>
+
+<script>
+  let timerInterval = null;
+  let timeLeft = 120;
+  let otpRequested = false;
+
+  // ── OTP input auto-advance ──
+  const boxes = Array.from({length:6}, (_,i) => document.getElementById('otp'+i));
+
+  boxes.forEach((box, idx) => {
+    box.addEventListener('input', e => {
+      const val = e.target.value.replace(/\D/g,'');
+      e.target.value = val;
+      if(val) {
+        e.target.classList.add('filled');
+        e.target.classList.remove('error');
+        if(idx < 5) boxes[idx+1].focus();
+      } else {
+        e.target.classList.remove('filled');
+      }
+      checkVerifyBtn();
+      clearError();
+    });
+
+    box.addEventListener('keydown', e => {
+      if(e.key === 'Backspace' && !e.target.value && idx > 0) {
+        boxes[idx-1].focus();
+        boxes[idx-1].value = '';
+        boxes[idx-1].classList.remove('filled');
+        checkVerifyBtn();
+      }
+    });
+
+    box.addEventListener('paste', e => {
+      e.preventDefault();
+      const paste = (e.clipboardData || window.clipboardData).getData('text').replace(/\D/g,'').slice(0,6);
+      paste.split('').forEach((ch, i) => {
+        if(boxes[i]) { boxes[i].value = ch; boxes[i].classList.add('filled'); }
+      });
+      const next = Math.min(paste.length, 5);
+      boxes[next].focus();
+      checkVerifyBtn();
+    });
+  });
+
+  function checkVerifyBtn() {
+    const full = boxes.every(b => b.value.length === 1);
+    document.getElementById('verifyBtn').disabled = !full;
+  }
+
+  function clearError() {
+    document.getElementById('errorMsg').textContent = '';
+    boxes.forEach(b => b.classList.remove('error'));
+  }
+
+  // ── Request OTP ──
+  function requestOTP() {
+    if(otpRequested) return;
+    const btn = document.getElementById('requestBtn');
+    const txt = document.getElementById('requestBtnText');
+    const arrow = document.getElementById('requestArrow');
+
+    btn.disabled = true;
+    txt.textContent = 'Sending…';
+    arrow.innerHTML = '<div class="spinner"></div>';
+
+    setTimeout(() => {
+      // Simulate API call success
+      otpRequested = true;
+      btn.disabled = false;
+      btn.style.background = '#16a34a';
+      txt.textContent = 'OTP Sent!';
+      arrow.innerHTML = '✓';
+
+      // Show OTP fields
+      document.getElementById('divider').classList.add('show');
+      document.getElementById('otpSection').classList.add('show');
+
+      // Focus first box
+      setTimeout(() => boxes[0].focus(), 450);
+
+      // Start timer
+      startTimer();
+
+      // Update step
+      document.getElementById('step2').querySelector('.step-dot').textContent = '2';
+    }, 1500);
+  }
+
+  // ── Timer ──
+  function startTimer() {
+    timeLeft = 120;
+    updateTimerDisplay();
+    clearInterval(timerInterval);
+    timerInterval = setInterval(() => {
+      timeLeft--;
+      updateTimerDisplay();
+      if(timeLeft <= 0) {
+        clearInterval(timerInterval);
+        document.getElementById('timerVal').textContent = '0:00';
+        const resend = document.getElementById('resendBtn');
+        resend.classList.add('active');
+        resend.style.cursor = 'pointer';
+      }
+    }, 1000);
+  }
+
+  function updateTimerDisplay() {
+    const m = Math.floor(timeLeft / 60);
+    const s = timeLeft % 60;
+    document.getElementById('timerVal').textContent = `${m}:${s.toString().padStart(2,'0')}`;
+  }
+
+  function resendOTP() {
+    const resend = document.getElementById('resendBtn');
+    if(!resend.classList.contains('active')) return;
+    resend.classList.remove('active');
+    boxes.forEach(b => { b.value=''; b.classList.remove('filled','error'); });
+    checkVerifyBtn();
+    clearError();
+    // Reset send button
+    const btn = document.getElementById('requestBtn');
+    const txt = document.getElementById('requestBtnText');
+    const arrow = document.getElementById('requestArrow');
+    btn.style.background='';
+    btn.disabled=true;
+    txt.textContent='Resending…';
+    arrow.innerHTML='<div class="spinner"></div>';
+    setTimeout(() => {
+      btn.style.background='#16a34a';
+      txt.textContent='OTP Resent!';
+      arrow.innerHTML='✓';
+      startTimer();
+      boxes[0].focus();
+    }, 1400);
+  }
+
+  // ── Verify OTP ──
+  function verifyOTP() {
+    const code = boxes.map(b => b.value).join('');
+    const btn = document.getElementById('verifyBtn');
+    const txt = document.getElementById('verifyBtnText');
+    const arrow = document.getElementById('verifyArrow');
+
+    btn.disabled = true;
+    txt.textContent = 'Verifying…';
+    arrow.innerHTML = '<div class="spinner"></div>';
+
+    // Simulate API call — accept any 6-digit code for demo
+    setTimeout(() => {
+      if(code === '000000') {
+        // Demo: wrong code
+        boxes.forEach(b => b.classList.add('error'));
+        document.getElementById('errorMsg').textContent = 'Invalid OTP. Please try again.';
+        btn.disabled = false;
+        txt.textContent = 'Verify OTP';
+        arrow.innerHTML = '→';
+      } else {
+        // Success
+        clearInterval(timerInterval);
+        document.getElementById('mainContent').style.display = 'none';
+        const success = document.getElementById('successOverlay');
+        success.classList.add('show');
+
+        // Update steps
+        document.getElementById('step2').className = 'step done';
+        document.getElementById('step2').querySelector('.step-dot').textContent = '✓';
+        document.getElementById('line2').classList.add('done');
+        document.getElementById('step3').className = 'step active';
+        document.getElementById('step3').querySelector('.step-dot').textContent = '3';
+      }
+    }, 1800);
+  }
+</script>
+</body>
+</html>

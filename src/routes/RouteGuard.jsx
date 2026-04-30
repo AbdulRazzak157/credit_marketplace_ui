@@ -8,7 +8,7 @@ export const PrivateRoute = () => {
 
     const { currentUser, loading, userProfile } = useAuth();
 
-    console.log("Current User Details from Route Guard : ", currentUser);
+    // console.log("Current User Details from Route Guard : ", currentUser);
 
     if (loading) return <div>Loading...</div>
 

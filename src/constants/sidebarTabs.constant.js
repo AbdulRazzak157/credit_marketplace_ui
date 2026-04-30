@@ -70,7 +70,6 @@ export const sidebarItems = [
 ];
 
 export const getUserSidebarItems = (userProfile) => {
-    console.log({ userProfile });
     if (userProfile?.userRole === "SUB_ADMIN") {
         const tabs = sidebarItems;
         const restrictTabs = ["/staff"];

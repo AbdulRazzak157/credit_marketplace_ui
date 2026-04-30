@@ -33,6 +33,9 @@ const leadStatusColors = {
 const normalizeSentence = (text) => {
     return text?.split("_").map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()).join(" ") || "-";
 }
+const formatSentence = (text) => {
+    return text?.split(" ").map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()).join(" ") || "-";
+}
 
 const truncateString = (str, maxLength = 25) => {
     if (str.length <= maxLength) {
@@ -91,4 +94,4 @@ function formatINRShort(amount) {
 
     return `₹ ${(Math.floor(amount / 100000) / 100).toFixed(2)} Cr`;
 }
-export { truncateString, leadStatusColors, normalizeSentence, formatINRShort };
+export { truncateString, leadStatusColors, normalizeSentence, formatINRShort,formatSentence };

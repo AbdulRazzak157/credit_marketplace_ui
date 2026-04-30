@@ -1,3 +1,4 @@
+import { UpdateLoanDetailsModal } from "../components/UpdateLoanDetailsModal";
 
 
 export const type = "DEV";
@@ -7,11 +8,22 @@ let API_BASE_URL;
 
 if (type === 'DEV') {
     API_BASE_URL = "http://localhost:4000";
+
+    // hari
+    // API_BASE_URL = "https://b3fn5jvm-4000.inc1.devtunnels.ms"
+
+    // razzak
     // API_BASE_URL = "https://57gph04g-4000.inc1.devtunnels.ms";
 }
 
 
 const API_URL = {
+
+    auth:{
+        login: `${API_BASE_URL}/api/v1/auth/sign-in`,
+        sendLoginOTP: `${API_BASE_URL}/api/auth/login/send-otp`,
+        verifyLoginOTP: `${API_BASE_URL}/api/v1/auth/login/verify-otp`
+    },
 
     profile: {
         getUserProfile: `${API_BASE_URL}/api/v1/users/profile`
@@ -41,6 +53,8 @@ const API_URL = {
         getLenderOverview: (lenderId) => `${API_BASE_URL}/api/v1/lenders/${lenderId}/details`,
         updateLenderDetails: (lenderId) => `${API_BASE_URL}/api/v1/lenders/${lenderId}`,
         getLenderProducts: (lenderId) => `${API_BASE_URL}/api/v1/lender-products/${lenderId}/list`,
+        getlenderLeadMetrics: (lenderId) => `${API_BASE_URL}/api/v1/lenders/${lenderId}/lender-lead-metrics`,
+        getSpecificLenderLeads: (lenderId) => `${API_BASE_URL}/api/v1/lenders/${lenderId}/leads`,
     },
 
     productManagement: {
@@ -68,6 +82,12 @@ const API_URL = {
         updateLeadStatus: (leadId) => `${API_BASE_URL}/api/v1/leads/${leadId}/status`,
         getLeadStaffList: `${API_BASE_URL}/api/v1/executives/names`,
         assignLeadToStaff: (leadId) => `${API_BASE_URL}/api/v1/leads/${leadId}/assignment`,
+        getLeadOverview: (leadId) => `${API_BASE_URL}/api/v1/leads/${leadId}/details`,
+        updateLoanDetails: (leadId) => `${API_BASE_URL}/api/v1/leads/${leadId}/credit-details`,
+        updateRemarkDetails: (leadId) => `${API_BASE_URL}/api/v1/leads/${leadId}/remarks`,
+        getBureauReport: (leadId) => `${API_BASE_URL}/api/v1/leads/${leadId}/bureau-report`,
+        getUpdateBureauReport: (leadId) => `${API_BASE_URL}/api/v1/leads/${leadId}/update-bureau-report`,
+        getLeadMatchedProducts: (leadId) => `${API_BASE_URL}/api/v1/leads/${leadId}/matched-products/details`
     }
 
 };

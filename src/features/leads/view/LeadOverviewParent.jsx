@@ -1,5 +1,5 @@
-import React, { useState } from 'react'
-import { NavLink, Outlet, useParams } from 'react-router-dom'
+import React, { useEffect, useState } from 'react'
+import { NavLink, Outlet, useOutletContext, useParams } from 'react-router-dom'
 import NavigationHeadline from '../../../components/NavigationHeadline'
 import { Icon } from '@iconify/react'
 import { LeadSource, LeadStatus } from '../../../components/LeadStatus'
@@ -21,6 +21,17 @@ const LeadOverviewParent = () => {
     formatPhone('+919848485853');
 
     const { getAccessToken } = useAuth();
+
+    const mainRef = useOutletContext();
+    useEffect(() => {
+        console.log("mainRef : ", mainRef?.current, mainRef);
+        if (mainRef?.current) {
+            mainRef.current.scrollTo({
+                top: 0,
+                behavior: "smooth"
+            });
+        }
+    }, [])
 
     const getLenderList = async () => {
         try {
@@ -89,7 +100,7 @@ const LeadOverviewParent = () => {
                     "Authorization": `Bearer ${token}`,
                     "Content-Type": "application/json",
                 },
-                body:JSON.stringify({
+                body: JSON.stringify({
                     executiveId: staffId,
                     reason,
                 })
@@ -100,7 +111,7 @@ const LeadOverviewParent = () => {
             }
             const result = await response.json();
             await refetch();
-            console.log("result : ",result);
+            console.log("result : ", result);
         } catch (error) {
             console.log("Error in Assign to staff member : ", error?.message);
             throw error;
@@ -108,7 +119,7 @@ const LeadOverviewParent = () => {
     }
     return (
         <div className='space-y-4'>
-            <NavigationHeadline content="Back" to="/lenders" />
+            <NavigationHeadline content="Back" to="/leads" />
 
             <div className='bg-white px-2 py-4 sm:px-8 flex flex-col gap-6 rounded-md'>
                 <div className='space-y-2'>
@@ -119,16 +130,20 @@ const LeadOverviewParent = () => {
                             <LeadSource source={leadData?.sourceChannel} />
                         </div>
                         <div className='flex items-center gap-2'>
-                            <div onClick={() => setIsStatusModalOpen(true)} className='flex items-center gap-x-1.5 py-1 px-3 rounded-lg bg-gray-100 border border-gray-300 cursor-pointer'>
-                                <Icon icon="lets-icons:edit-fill" width="16" height="16" />
-                                <span className='text-xs font-semibold text-[#232323]'>Update Status</span>
-                            </div>
-                            <div onClick={() => setIsAssignModalOpen(true)} className='flex items-center gap-x-1.5 py-1 px-3 rounded-lg bg-(--primary) cursor-pointer'>
-                                <span className='text-white'>
-                                    <Icon icon="mynaui:user-solid" width="13" height="13" />
-                                </span>
-                                <span className='text-xs font-semibold  text-white'>Assign</span>
-                            </div>
+                            {leadData.status !== "DISBURSED" &&
+                                <>
+                                    <div onClick={() => setIsStatusModalOpen(true)} className='flex items-center gap-x-1.5 py-1 px-3 rounded-lg bg-gray-100 border border-gray-300 cursor-pointer'>
+                                        <Icon icon="lets-icons:edit-fill" width="16" height="16" />
+                                        <span className='text-xs font-semibold text-[#232323]'>Update Status</span>
+                                    </div>
+                                    <div onClick={() => setIsAssignModalOpen(true)} className='flex items-center gap-x-1.5 py-1 px-3 rounded-lg bg-(--primary) cursor-pointer'>
+                                        <span className='text-white'>
+                                            <Icon icon="mynaui:user-solid" width="13" height="13" />
+                                        </span>
+                                        <span className='text-xs font-semibold  text-white'>Assign</span>
+                                    </div>
+                                </>
+                            }
                         </div>
                     </div>
                     <div className='flex items-center gap-4'>
@@ -160,7 +175,7 @@ const LeadOverviewParent = () => {
                             to="products"
                             end
                         >
-                            Products
+                            Lenders
                         </NavLink>
                         <NavLink
                             className={({ isActive }) => `font-bold border-b-2 pb-1 ${isActive ? "text-(--primary) border-(--primary)" : "text-gray-500 border-transparent"}`}
