@@ -7,6 +7,7 @@ import CustomCircleLoader from '../../../shared/CustomCircleLoader';
 import { Icon } from '@iconify/react';
 import { UpdateLoanDetailsModal } from '../../../components/UpdateLoanDetailsModal';
 import { UpdateRemarkDetailsModal } from '../../../components/UpdateRemarkDetailsModal';
+import { normalizeSentence } from '../../../helpers';
 
 
 const LeadOverview = () => {
@@ -262,7 +263,7 @@ const LeadOverview = () => {
           </div>
           <div className='w-full px-2 sm:px-4 text-xs sm:text-base'>
             {leadDetails?.loanType && (
-              <span className='bg-green-600 rounded-sm text-sm text-white py-1 px-2'>{leadDetails?.loanType.toUpperCase()}</span>
+              <span className='bg-green-500 rounded-sm text-sm text-white py-1 px-2'>{normalizeSentence(leadDetails?.loanType.toUpperCase())}</span>
             )}
           </div>
         </div>
@@ -332,7 +333,7 @@ const LeadOverview = () => {
             <label>Employment Type</label>
             <span className='text-(--primary) font-bold pr-1'>:</span>
           </div>
-          <div className='w-full px-2 sm:px-4 text-xs sm:text-base'>{leadDetails?.employmentType}</div>
+          <div className='w-full px-2 sm:px-4 text-xs sm:text-base'>{normalizeSentence(leadDetails?.employmentType)}</div>
         </div>
 
         <div className='flex'>
@@ -374,7 +375,7 @@ const LeadOverview = () => {
           </div>
           <div className='w-full px-2 sm:px-4 text-xs sm:text-base'>
             {leadDetails?.status && (
-              <span className='bg-green-600 rounded-sm text-sm text-white py-1 px-2'>{leadDetails?.status}</span>
+              <span className='bg-green-600 rounded-sm text-sm text-white py-1 px-2'>{normalizeSentence(leadDetails?.status)}</span>
             )}
           </div>
         </div>

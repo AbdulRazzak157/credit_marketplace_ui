@@ -3,7 +3,7 @@
 
 import { Children, createContext, useContext, useEffect, useState } from "react";
 import { auth } from "../firebase";
-import { onAuthStateChanged, signInWithEmailAndPassword, signOut } from "firebase/auth";
+import { onAuthStateChanged, signInWithCustomToken, signInWithEmailAndPassword, signOut } from "firebase/auth";
 import API_URL from "../api/apiConfig";
 
 const AuthContext = createContext()
@@ -13,11 +13,16 @@ export function AuthContextProvider({ children }) {
     const [loading, setLoading] = useState(true);
     const [currentUser, setCurrentUser] = useState(null);
     const [userProfile, setUserProfile] = useState(null);
+    const [otpSession, setOtpSession] = useState("");
+    const [userEmail, setUserEmail] = useState("");
 
 
     // Login
     const login = (email, password) => {
         return signInWithEmailAndPassword(auth, email, password);
+    };
+    const loginWithCustomToken = (customToken) => {
+        return signInWithCustomToken(auth, customToken);
     };
 
     // Logout
@@ -90,7 +95,12 @@ export function AuthContextProvider({ children }) {
         setUserProfile,
         login,
         logout,
-        getAccessToken
+        getAccessToken,
+        otpSession,
+        setOtpSession,
+        userEmail,
+        setUserEmail,
+        loginWithCustomToken
     };
 
 

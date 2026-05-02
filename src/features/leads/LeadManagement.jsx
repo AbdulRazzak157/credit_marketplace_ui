@@ -1,5 +1,5 @@
 import { Icon } from '@iconify/react'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { reactSelectCustomStyles } from '../../shared/customStyles';
 import { IoSearch } from 'react-icons/io5';
 import { RxCross2 } from 'react-icons/rx';
@@ -10,7 +10,7 @@ import DataTableBase from '../../components/DataTableBase';
 import { formatINRShort } from '../../helpers';
 import { getBureauScoreColor, STATUS_COLORS, timeAgo } from '../../shared/utils';
 import ActionButton from '../../components/buttons/ActionButton';
-import { Link } from 'react-router-dom';
+import { Link, useOutletContext } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
 import { useAuth } from '../../context/AuthContext';
 import useDebounce from '../../hooks/useDebounce';
@@ -37,6 +37,17 @@ const LeadManagement = () => {
   const debounceGeoSearch = useDebounce(geoSearch);
 
   const { getAccessToken } = useAuth();
+
+  const mainRef = useOutletContext();
+  useEffect(() => {
+    console.log("mainRef : ", mainRef?.current, mainRef);
+    if (mainRef?.current) {
+      mainRef.current.scrollTo({
+        top: 0,
+        behavior: "smooth"
+      });
+    }
+  }, [])
 
 
   const getManageLeadList = async () => {
@@ -172,7 +183,7 @@ const LeadManagement = () => {
       selector: (row) => (
         <div className='text-sm text-blue-600 underline cursor-pointer'>
           <Link to={`/leads/view/${row?.leadId}`}>
-          {row?.leadId}
+            {row?.leadId}
           </Link>
         </div>
       ),
@@ -233,19 +244,25 @@ const LeadManagement = () => {
     },
     {
       name: "Customer Type",
-      selector: (row) => (
-        <div style={{
-          backgroundColor: row.isNTC ? '#E6F1FB' : '#F1EFE8',
-          color: row.isNTC ? '#0C447C' : '#444441',
-          border: `0.5px solid ${row.isNTC ? '#85B7EB' : '#B4B2A9'}`,
-          padding: '3px 10px',
-          borderRadius: '20px',
-          fontSize: '12px',
-          fontWeight: 500,
-        }}>
-          {row.customerType ? 'NTC' : 'Non NTC'}
+      selector: (row) => {
+        return <div>
+          {
+            row?.customerType === null ? (<div className='text-xs'>N/A</div>) : (
+              <div style={{
+                backgroundColor: row.customerType ? '#E6F1FB' : '#F1EFE8',
+                color: row.customerType ? '#0C447C' : '#444441',
+                border: `0.5px solid ${row.customerType ? '#85B7EB' : '#B4B2A9'}`,
+                padding: '3px 10px',
+                borderRadius: '20px',
+                fontSize: '12px',
+                fontWeight: 500,
+              }}>
+                {row.customerType ? 'NTC' : 'Non NTC'}
+              </div>
+            )
+          }
         </div>
-      ),
+      },
       center: "true",
       width: "170px"
     },
@@ -290,7 +307,9 @@ const LeadManagement = () => {
       name: "Top Match Products",
       selector: (row) => (
         <div className={`font-semibold text-lg ${row?.matchedProducts && "text-blue-600 underline cursor-pointer"} `}>
-          {row?.matchedProducts}
+          <Link to={`/leads/view/${row?.leadId}/products`}>
+            {row?.matchedProducts}
+          </Link>
         </div>
       ),
       center: "true",
@@ -456,12 +475,12 @@ const LeadManagement = () => {
                   { label: "New", value: "NEW" },
                   { label: "In Review", value: "IN_REVIEW" },
                   { label: "Rejected", value: "REJECTED" },
-                  { label: "Approved", value: "APPROVED" },
+                  // { label: "Approved", value: "APPROVED" },
                   { label: "Disbursed", value: "DISBURSED" },
                 ]}
                 value={selectedStatus || null}
                 onChange={(option) => setSelectedStatus(option)}
-                placeholder="Ex: Approved"
+                placeholder="Ex: New"
                 styles={reactSelectCustomStyles}
                 className="capitalize"
                 isClearable

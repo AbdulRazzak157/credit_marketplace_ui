@@ -44,6 +44,7 @@ import LeadBureau from "../features/leads/view/LeadBureau";
 import LeadProducts from "../features/leads/view/LeadProducts";
 import LeadActivity from "../features/leads/view/LeadActivity";
 import LenderLeadMetrics from "../features/lenders/LenderLeadMetrics";
+import TwoFactorEmailOTP from "../pages/auth/TwoFactorEmailOTP";
 
 export const router = createBrowserRouter([
     {
@@ -166,6 +167,7 @@ export const router = createBrowserRouter([
                 element: <AuthLayout />,
                 children: [
                     { path: "login", element: <Login /> },
+                    { path: "login-verification", element: <TwoFactorEmailOTP /> },
                     { path: "forgot-password", element: <ForgotPassword /> },
                 ]
             }

@@ -94,7 +94,7 @@ function FetchedState({ bureau }) {
                         <span style={{ color: "#22C55E" }}>900 - Excellent</span>
                     </div>
                     {fetchedAt && (
-                        <p className="text-[11px] text-gray-500 font-mono mt-2">Fetched {fetchedAt}</p>
+                        <p className="text-[11px] text-gray-500  mt-2">Fetched {fetchedAt}</p>
                     )}
                 </div>
 

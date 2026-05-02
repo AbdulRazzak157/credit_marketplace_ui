@@ -105,13 +105,13 @@ const LenderManagement = () => {
     setCurrentPage(page);
   };
 
-  if (isLoading) {
-    return (
-      <div className='flex justify-center items-center w-full h-screen'>
-        <CustomCircleLoader />
-      </div>
-    )
-  }
+  // if (isLoading) {
+  //   return (
+  //     <div className='flex justify-center items-center w-full h-screen'>
+  //       <CustomCircleLoader />
+  //     </div>
+  //   )
+  // }
 
 
   const LENDER_DETAILS = [

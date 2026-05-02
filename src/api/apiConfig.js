@@ -19,6 +19,12 @@ if (type === 'DEV') {
 
 const API_URL = {
 
+    auth:{
+        login: `${API_BASE_URL}/api/v1/auth/sign-in`,
+        sendLoginOTP: `${API_BASE_URL}/api/auth/login/send-otp`,
+        verifyLoginOTP: `${API_BASE_URL}/api/v1/auth/login/verify-otp`
+    },
+
     profile: {
         getUserProfile: `${API_BASE_URL}/api/v1/users/profile`
     },
@@ -48,6 +54,7 @@ const API_URL = {
         updateLenderDetails: (lenderId) => `${API_BASE_URL}/api/v1/lenders/${lenderId}`,
         getLenderProducts: (lenderId) => `${API_BASE_URL}/api/v1/lender-products/${lenderId}/list`,
         getlenderLeadMetrics: (lenderId) => `${API_BASE_URL}/api/v1/lenders/${lenderId}/lender-lead-metrics`,
+        getSpecificLenderLeads: (lenderId) => `${API_BASE_URL}/api/v1/lenders/${lenderId}/leads`,
     },
 
     productManagement: {

@@ -17,6 +17,7 @@ import { useAuth } from "../../context/AuthContext"
 import { toast } from 'react-toastify';
 import CustomThreeDotsLoader from '../../shared/CustomThreeDotsLoader';
 import DeleteAlertModal from '../../components/DeleteAlertModal';
+import { formatSentence } from '../../helpers';
 
 
 const SubAdminManagement = () => {
@@ -27,6 +28,7 @@ const SubAdminManagement = () => {
     const [statusLoading, setStatusLoading] = useState({});
     const [deletableId, setDeletableId] = useState("");
     const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+    const [loadMorePermissions, setLoadMorePermissions] = useState({})
 
     const { register, handleSubmit, formState: { errors, isSubmitting }, reset, control } = useForm();
 
@@ -199,19 +201,19 @@ const SubAdminManagement = () => {
         {
             name: "Staff Role",
             selector: (row) => (
-                <div className='text-xs font-semibold text-(--primary) cursor-pointer'>
+                <div className='text-sm font-semibold text-(--primary) cursor-pointer'>
                     {row?.staffRole}
                 </div>
             ),
             // center: "true",
-            width: "170px"
+            width: "190px"
         },
         {
             name: "Staff Details",
             selector: (row) => (
-                <div className='flex flex-col items-start py-4'>
-                    <div className='text-sm font-semibold text-(--primary)'>{row?.name}</div>
-                    <div className='flex flex-col'>
+                <div className='flex flex-col gap-1 items-start py-4'>
+                    <div className='font-semibold text-(--primary)'>{formatSentence(row?.name)}</div>
+                    <div className='flex flex-col gap-0.5'>
                         <div className='text-xs text-gray-600 font-medium'>{row?.mobileNumber}</div>
                         <div className='text-xs text-gray-600 font-medium'>{row?.email}</div>
                     </div>
@@ -222,11 +224,23 @@ const SubAdminManagement = () => {
         },
         {
             name: "Permissions",
-            selector: (row) => (
-                <div className='py-4 flex flex-col gap-1'>
-                    {row?.permissions?.map((permission) => (<div className='py-1'><span className="px-3 py-1 rounded-full text-xs font-medium bg-[#EEF4FF] text-[#3156D3] border border-[#D7E3FF]">{permission}</span></div>))}
+            selector: (row) => {
+                const permissions = loadMorePermissions[row?.email] ? row?.permissions : row?.permissions.slice(0,3);
+                return <div className='py-4 flex flex-col gap-1'>
+                    {permissions?.map((permission) => (
+                        <div className='py-1'>
+                            <span className="px-3 py-1 rounded-full text-xs font-medium bg-[#EEF4FF] text-[#3156D3] border border-[#D7E3FF]">{permission}</span>
+                        </div>
+                    ))}
+                    {
+                        row?.permissions?.length > 3 && (
+                            <div className='mt-2' onClick={() => setLoadMorePermissions((prev) => ({ ...prev, [row?.email]: !(prev[row?.email] || false) }))}>
+                                <span className='text-xs cursor-pointer py-1 px-2 bg-blue-500 text-white rounded-md'>{loadMorePermissions[row?.email] ? "Show Less" : "Load More..."}</span>
+                            </div>
+                        )
+                    }
                 </div>
-            ),
+            },
             // center: "true",
             width: "210px"
         },
@@ -360,6 +374,7 @@ const SubAdminManagement = () => {
                             render={({ field }) => (
                                 <Select
                                     {...field}
+                                    value={field.value}
                                     options={ROLE_OPTIONS}
                                     placeholder="Eg: Operations Manager"
                                     // styles={reactSelectCustomStyles}
