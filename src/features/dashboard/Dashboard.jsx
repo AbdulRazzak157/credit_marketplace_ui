@@ -1,8 +1,9 @@
 import React from 'react'
+import AccessRestricted from '../../pages/AccessRestricted'
 
 const Dashboard = () => {
   return (
-    <div>Dashboard</div>
+    <div><AccessRestricted /></div>
   )
 }
 

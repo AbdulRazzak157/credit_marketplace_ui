@@ -72,7 +72,7 @@ export const sidebarItems = [
 export const getUserSidebarItems = (userProfile) => {
     if (userProfile?.userRole === "SUB_ADMIN") {
         const tabs = sidebarItems;
-        const restrictTabs = ["/staff"];
+        const restrictTabs = ["/sub-admins"];
 
         const data = tabs.filter((tab) => !restrictTabs.includes(tab.to));
         console.log("data : ", data);
@@ -80,7 +80,7 @@ export const getUserSidebarItems = (userProfile) => {
     }
     if (userProfile?.userRole === "EXECUTIVE") {
         const tabs = sidebarItems;
-        const restrictTabs = ["/staff", "/lenders"];
+        const restrictTabs = ["/staff", "/lenders", "/sub-admins"];
 
         return tabs.filter((tab) => !restrictTabs.includes(tab.to));
     }
