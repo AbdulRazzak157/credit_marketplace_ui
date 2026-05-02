@@ -2,7 +2,7 @@ import { createBrowserRouter } from "react-router-dom";
 import NotFoundPage from "../shared/NotFoundPage";
 import AuthLayout from "../layouts/AuthLayout";
 import Login from "../pages/auth/Login";
-import { PrivateRoute, PublicRoute } from "./RouteGuard";
+import { PrivateRoute, ProtectedPage, PublicRoute } from "./RouteGuard";
 import ForgotPassword from "../pages/auth/ForgotPassword";
 import UserLayout from "../layouts/UserLayout";
 import Overview from "../features/overview/Overview";
@@ -45,6 +45,7 @@ import LeadProducts from "../features/leads/view/LeadProducts";
 import LeadActivity from "../features/leads/view/LeadActivity";
 import LenderLeadMetrics from "../features/lenders/LenderLeadMetrics";
 import TwoFactorEmailOTP from "../pages/auth/TwoFactorEmailOTP";
+import ResetPassword from "../pages/auth/ResetPassword";
 
 export const router = createBrowserRouter([
     {
@@ -58,7 +59,11 @@ export const router = createBrowserRouter([
                     { path: "dashboard", element: <Dashboard /> },
                     {
                         path: "leads",
-                        element: <LeadManagementParent />,
+                        element: (
+                            <ProtectedPage path={'/leads'} >
+                                <LeadManagementParent />
+                            </ProtectedPage>
+                        ),
                         children: [
                             { path: "", element: <LeadManagement /> },
                             {
@@ -75,14 +80,22 @@ export const router = createBrowserRouter([
                     },
                     {
                         path: "manage-leads",
-                        element: <ManageLeadsParent />,
+                        element: (
+                            <ProtectedPage path={'/manage-leads'} >
+                                <ManageLeadsParent />
+                            </ProtectedPage>
+                        ),
                         children: [
                             { path: "", element: <ManageLeads /> }
                         ]
                     },
                     {
                         path: "sub-admins",
-                        element: <SubAdminManagementParent />,
+                        element: (
+                            <ProtectedPage path={'/sub-admins'} >
+                                <SubAdminManagementParent />
+                            </ProtectedPage>
+                        ),
                         children: [
                             {
                                 path: "",
@@ -97,7 +110,11 @@ export const router = createBrowserRouter([
                     },
                     {
                         path: "lenders",
-                        element: <LenderManagementParent />,
+                        element: (
+                            <ProtectedPage path={'/lenders'} >
+                                <LenderManagementParent />
+                            </ProtectedPage>
+                        ),
                         children: [
                             {
                                 path: "",
@@ -138,7 +155,11 @@ export const router = createBrowserRouter([
                     },
                     {
                         path: "staff",
-                        element: <StaffManagementParent />,
+                        element: (
+                            <ProtectedPage path={'/staff'} >
+                                <StaffManagementParent />
+                            </ProtectedPage>
+                        ),
                         children: [
                             { path: "", element: <StaffManagement /> },
                             { path: "view/:id", element: <StaffView /> },
@@ -146,7 +167,12 @@ export const router = createBrowserRouter([
                         ]
                     },
                     {
-                        path: "products", element: <ProductManagementParent />,
+                        path: "products",
+                        element: (
+                            <ProtectedPage path={'/products'} >
+                                <ProductManagementParent />
+                            </ProtectedPage>
+                        ),
                         children: [
                             { path: "", element: <ProductManagement /> },
                             { path: ":productId", element: <ViewLenderProduct /> }
@@ -169,6 +195,7 @@ export const router = createBrowserRouter([
                     { path: "login", element: <Login /> },
                     { path: "login-verification", element: <TwoFactorEmailOTP /> },
                     { path: "forgot-password", element: <ForgotPassword /> },
+                    { path: "reset-password", element: <ResetPassword /> },
                 ]
             }
         ]

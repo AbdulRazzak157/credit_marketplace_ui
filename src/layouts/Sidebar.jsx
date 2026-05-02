@@ -14,7 +14,24 @@ const Sidebar = () => {
 
 
 
-    const updatedSidebarItems = getUserSidebarItems(userProfile);
+
+    let updatedSidebarItems = getUserSidebarItems(userProfile);
+
+    if (userProfile?.permissions?.length > 0) {
+        const PERMISSIONS_MAP = {
+            '/lenders': 'VIEW_LENDERS',
+            '/staff': 'VIEW_EXECUTIVES',
+            '/leads': 'VIEW_LEADS',
+            '/manage_leads': 'VIEW_MANAGE_LEADS',
+            '/products': 'VIEW_LENDER_PRODUCTS',
+        }
+        const permissions = new Set(userProfile?.permissions || []);
+        updatedSidebarItems = updatedSidebarItems?.filter((tab) => {
+            const path = tab?.to?.toLowerCase();
+            const required = PERMISSIONS_MAP[path];
+            return required ? permissions.has(required) : true;
+        })
+    }
 
     const handleLogout = () => {
         setIsLogoutModalOpen(true);
