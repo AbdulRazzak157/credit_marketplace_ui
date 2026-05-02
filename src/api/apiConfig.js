@@ -7,10 +7,10 @@ export const type = "DEV";
 let API_BASE_URL;
 
 if (type === 'DEV') {
-    // API_BASE_URL = "http://localhost:4000";
+    API_BASE_URL = "http://localhost:4000";
 
     // hari
-    API_BASE_URL = "https://b3fn5jvm-4000.inc1.devtunnels.ms"
+    // API_BASE_URL = "https://b3fn5jvm-4000.inc1.devtunnels.ms"
 
     // razzak
     // API_BASE_URL = "https://57gph04g-4000.inc1.devtunnels.ms";
