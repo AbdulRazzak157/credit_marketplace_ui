@@ -15,6 +15,7 @@ export function AuthContextProvider({ children }) {
     const [userProfile, setUserProfile] = useState(null);
     const [otpSession, setOtpSession] = useState("");
     const [userEmail, setUserEmail] = useState("");
+    const [otpReferenceId, setOtpReferenceId] = useState("")
 
 
     // Login
@@ -49,7 +50,7 @@ export function AuthContextProvider({ children }) {
                 method: "GET",
                 headers: {
                     Authorization: `Bearer ${token}`,
-                    'Content-Type': 'application/json'
+                    // 'Content-Type': 'application/json'
                 }
             });
 
@@ -59,6 +60,7 @@ export function AuthContextProvider({ children }) {
             }
 
             const result = await response.json();
+            console.log("user Profile : ",result)
 
             if (result?.response) {
                 setUserProfile(result?.response);
@@ -100,7 +102,9 @@ export function AuthContextProvider({ children }) {
         setOtpSession,
         userEmail,
         setUserEmail,
-        loginWithCustomToken
+        loginWithCustomToken,
+        otpReferenceId,
+        setOtpReferenceId
     };
 
 

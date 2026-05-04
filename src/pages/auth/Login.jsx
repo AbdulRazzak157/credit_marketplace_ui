@@ -50,7 +50,7 @@ const Login = () => {
             });
             if (!response.ok) {
                 const errorResult = await response.json();
-                throw new Error(errorResult?.message);
+                throw new Error(errorResult?.response?.message);
             }
             const result = await response.json();
             const responseData = {
@@ -58,12 +58,14 @@ const Login = () => {
                 email: result?.response?.email,
             }
 
+            console.log("oottpp", responseData, responseData.otpToken)
             setOtpSession(responseData.otpToken);
             setUserEmail(responseData.email)
 
             navigate("/login-verification");
         } catch (error) {
-            toast.error(getFirebaseErrorMessage(error));
+            console.log({error})
+            toast.error(error?.message);
             console.error("Login error:", error);
             setIsLogging(false);
         }

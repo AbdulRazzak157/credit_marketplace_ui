@@ -6,6 +6,7 @@ import ErrorMessage from "../../shared/ErrorMessage";
 import CustomThreeDotsLoader from "../../shared/CustomThreeDotsLoader";
 import { useAuth } from "../../context/AuthContext";
 import API_URL from "../../api/apiConfig";
+import { toast } from "react-toastify";
 
 const requirements = [
     { id: "length", label: "At least 8 characters", test: (p) => p.length >= 8 },
@@ -84,17 +85,17 @@ const ResetPassword = () => {
     const [showPassword, setShowPassword] = useState(false);
     const [showConfirm, setShowConfirm] = useState(false);
     const [submitted, setSubmitted] = useState(false);
-    const [success, setSuccess] = useState(true);
+    const [success, setSuccess] = useState(false);
 
-    const { otpSession } = useAuth();
+    const { otpSession, otpReferenceId } = useAuth();
 
-    // useEffect(() => {
-    //     if (!otpSession) {
-    //         navigate("/forgot-password");
-    //     }
-    // }, [otpSession, navigate]);
+    useEffect(() => {
+        if (!otpSession) {
+            navigate("/forgot-password");
+        }
+    }, [otpSession, navigate]);
 
-    // if (!otpSession) return null;
+    if (!otpSession) return null;
 
     // Evaluate each requirement live
     const results = requirements.map((r) => ({ ...r, passed: r.test(password) }));
@@ -110,29 +111,34 @@ const ResetPassword = () => {
 
     const handleSubmit = async () => {
         setSubmitted(true);
+
         if (!allPassed || password !== confirm) {
             setSubmitted(false);
             return;
         };
-        try {
-            await new Promise(resolve => setTimeout(resolve, 3000));
-            // const response = await fetch(`${API_URL.auth.sendLoginOTP}`, {
-            //     method: "POST",
-            //     headers: {
-            //         "otp-session": otpSession,
-            //         "Content-Type": "application/json",
-            //     },
-            //     body:JSON.stringify({
 
-            //     })
-            // });
-            // if (!response.ok) {
-            //     const errorResult = await response.json();
-            //     throw new Error(errorResult?.message);
-            // }
-            // const result = await response.json();
-            // console.log("Result of Reset Password : ",result);
-            setSuccess(true);
+        try {
+            const response = await fetch(`${API_URL.auth.resetForgotPassword}`, {
+                method: "POST",
+                headers: {
+                    "otp-session": otpSession,
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    newPassword: password,
+                    referenceId: otpReferenceId
+                })
+            });
+
+            if (!response.ok) {
+                const errorResult = await response.json();
+                throw new Error(errorResult?.message);
+            }
+
+            const result = await response.json();
+             toast.success("Password Reset Successfully");
+             setSuccess(true);
+             console.log("Result of Reset Password : ", result);
         } catch (error) {
             console.log("Error in Reset Password : ", error?.message);
         }
