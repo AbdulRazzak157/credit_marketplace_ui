@@ -1,4 +1,5 @@
 import { UpdateLoanDetailsModal } from "../components/UpdateLoanDetailsModal";
+import app from "../firebase";
 
 
 export const type = "DEV";
@@ -7,10 +8,10 @@ export const type = "DEV";
 let API_BASE_URL;
 
 if (type === 'DEV') {
-    API_BASE_URL = "http://localhost:4000";
+    // API_BASE_URL = "http://localhost:4000";
 
     // hari
-    // API_BASE_URL = "https://b3fn5jvm-4000.inc1.devtunnels.ms"
+    API_BASE_URL = "https://b3fn5jvm-4000.inc1.devtunnels.ms"
 
     // razzak
     // API_BASE_URL = "https://57gph04g-4000.inc1.devtunnels.ms";
@@ -20,9 +21,12 @@ if (type === 'DEV') {
 const API_URL = {
 
     auth:{
-        login: `${API_BASE_URL}/api/v1/auth/sign-in`,
-        sendLoginOTP: `${API_BASE_URL}/api/auth/login/send-otp`,
-        verifyLoginOTP: `${API_BASE_URL}/api/v1/auth/login/verify-otp`
+        login: `${API_BASE_URL}/auth/sign-in`,
+        sendLoginOTP: `${API_BASE_URL}/auth/login/send-otp`,
+        verifyLoginOTP: `${API_BASE_URL}/auth/login/verify-otp`,
+        sentForgotPasswordEmailOtp: (email) => `${API_BASE_URL}/auth/forgot-password/sent-email-otp/${email}`,
+        verifyForgotPasswordEmailOtp: `${API_BASE_URL}/auth/forgot-password/verify-email-otp`,
+        resetForgotPassword: `${API_BASE_URL}/auth/forgot-password/reset-password`
     },
 
     profile: {

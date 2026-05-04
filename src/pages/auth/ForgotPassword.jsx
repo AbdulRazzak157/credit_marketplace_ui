@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react'
 import { useAuth } from '../../context/AuthContext';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import API_URL from '../../api/apiConfig';
 import CustomThreeDotsLoader from '../../shared/CustomThreeDotsLoader';
 import { toast } from 'react-toastify';
@@ -11,76 +11,71 @@ const ForgotPassword = () => {
   const navigate = useNavigate();
   const [sendOtpLoading, setSendOtpLoading] = useState(false);
   const [verifyOtpLoading, setVerifyOtpLoading] = useState(false);
-  const [otpReferenceId, setOtpReferenceId] = useState("");
   const [requestedOtp, setRequestedOtp] = useState(false);
   const [userEmail, setUserEmail] = useState("");
+  const { otpSession, setOtpSession, setOtpReferenceId, otpReferenceId } = useAuth();
 
-  const { otpSession, loginWithCustomToken } = useAuth();
-
-
+  // requesting otp
   const requestOtpHandler = async () => {
-
     setSendOtpLoading(true)
+
     try {
       await new Promise(resolve => setTimeout(resolve, 3000));
-      // const response = await fetch(`${API_URL.auth.sendLoginOTP}`, {
-      //   method: "POST",
-      //   headers: {
-      //     "otp-session": otpSession,
-      //     "Content-Type": "application/json",
-      //   },
-      // });
-      // if (!response.ok) {
-      //   const errorResult = await response.json();
-      //   throw new Error(errorResult?.message);
-      // }
-      // const result = await response.json();
-      const result = {
-        response: {
-          referenceId: "fdkdskjdskj"
-        }
+
+      const response = await fetch(`${API_URL.auth.sentForgotPasswordEmailOtp(userEmail)}`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+
+      if (!response.ok) {
+        const errorResult = await response.json();
+        throw new Error(errorResult?.message);
       }
+
+      const result = await response.json();
+
       setOtpReferenceId(result?.response?.referenceId);
+      setOtpSession(result?.response?.otpSessionToken)
       setRequestedOtp(true);
-      console.log("Forgot OTP send Result : ", result);
       toast.success("Reset OTP Send Successfully");
+      console.log("Forgot Password OTP Send Result : ", result);
     } catch (error) {
       toast.error(error?.message)
-      console.log("Error in Request Login OTP :", error?.message);
+      console.log("Error in Send Forgot Password OTP :", error?.message);
     }
     setSendOtpLoading(false);
   }
 
+
+  // verifying otp
   const verifyLoginOtpHandler = async () => {
     setVerifyOtpLoading(true);
+
     try {
-      await new Promise(resolve => setTimeout(resolve, 3000))
-      // const response = await fetch(`${API_URL.auth.verifyLoginOTP}`, {
-      //   method: "POST",
-      //   headers: {
-      //     "otp-session": otpSession,
-      //     "Content-Type": "application/json",
-      //   },
-      //   body: JSON.stringify({
-      //     otp_reference: otpReferenceId,
-      //     otp_number: otp
-      //   })
-      // });
-      // if (!response.ok) {
-      //   const errorResult = await response.json();
-      //   throw new Error(errorResult?.message);
-      // }
-      // const result = await response.json();
-      // const token = result?.response?.token;
+      const response = await fetch(`${API_URL.auth.verifyForgotPasswordEmailOtp}`, {
+        method: "POST",
+        headers: {
+          "otp-session": otpSession,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          otp_reference: otpReferenceId,
+          otp_number: otp
+        })
+      });
 
-      // console.log("Login OTP verify Result : ", result);
-      // await loginWithCustomToken(token)
+      if (!response.ok) {
+        const errorResult = await response.json();
+        throw new Error(errorResult?.message);
+      }
 
-      // setTimeout(() => {
-      //   toast.success("Logged in successfully");
-      //   navigate("/");
-      // }, 800)
+      const result = await response.json();
 
+      toast.success("Reset OTP Verified Successfully");
+      navigate("/reset-password");
+      console.log("Forgot Password OTP Verify Result : ", result);
     } catch (error) {
       toast.error(error?.message)
       console.log("Error in Verify Forgot password OTP :", error?.message);
