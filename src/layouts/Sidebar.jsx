@@ -22,7 +22,7 @@ const Sidebar = () => {
             '/lenders': 'VIEW_LENDERS',
             '/staff': 'VIEW_EXECUTIVES',
             '/leads': 'VIEW_LEADS',
-            '/manage_leads': 'VIEW_MANAGE_LEADS',
+            '/manage-leads': 'VIEW_MANAGE_LEADS',
             '/products': 'VIEW_LENDER_PRODUCTS',
         }
         const permissions = new Set(userProfile?.permissions || []);

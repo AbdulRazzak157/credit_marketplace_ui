@@ -10,6 +10,8 @@ import API_URL from '../../../api/apiConfig'
 import { useAuth } from '../../../context/AuthContext'
 import CustomCircleLoader from '../../../shared/CustomCircleLoader'
 import { normalizeSentence } from '../../../helpers'
+import HasPermission from '../../../components/HasPermission'
+import { userPermissions } from '../../../constants/subadminPermissions'
 
 const LeadOverviewParent = () => {
     const { leadId } = useParams();
@@ -136,12 +138,14 @@ const LeadOverviewParent = () => {
                                         <Icon icon="lets-icons:edit-fill" width="16" height="16" />
                                         <span className='text-xs font-semibold text-[#232323]'>Update Status</span>
                                     </div>
-                                    <div onClick={() => setIsAssignModalOpen(true)} className='flex items-center gap-x-1.5 py-1 px-3 rounded-lg bg-(--primary) cursor-pointer'>
-                                        <span className='text-white'>
-                                            <Icon icon="mynaui:user-solid" width="13" height="13" />
-                                        </span>
-                                        <span className='text-xs font-semibold  text-white'>Assign</span>
-                                    </div>
+                                    <HasPermission permission={userPermissions.LEADS_MANAGEMENT.ASSIGN_LEADS} >
+                                        <div onClick={() => setIsAssignModalOpen(true)} className='flex items-center gap-x-1.5 py-1 px-3 rounded-lg bg-(--primary) cursor-pointer'>
+                                            <span className='text-white'>
+                                                <Icon icon="mynaui:user-solid" width="13" height="13" />
+                                            </span>
+                                            <span className='text-xs font-semibold  text-white'>Assign</span>
+                                        </div>
+                                    </HasPermission>
                                 </>
                             }
                         </div>

@@ -46,6 +46,7 @@ import LeadActivity from "../features/leads/view/LeadActivity";
 import LenderLeadMetrics from "../features/lenders/LenderLeadMetrics";
 import TwoFactorEmailOTP from "../pages/auth/TwoFactorEmailOTP";
 import ResetPassword from "../pages/auth/ResetPassword";
+import { userPermissions } from "../constants/subadminPermissions";
 
 export const router = createBrowserRouter([
     {
@@ -122,7 +123,11 @@ export const router = createBrowserRouter([
                             },
                             {
                                 path: "onboard",
-                                element: <AddLender />
+                                element: (
+                                    <ProtectedPage path={'/lenders/onboard'} >
+                                        <AddLender />
+                                    </ProtectedPage>
+                                ),
                             },
                             {
                                 path: "view/:id",
@@ -131,24 +136,76 @@ export const router = createBrowserRouter([
                                     { path: "", element: <LenderOverview /> },
                                     { path: "lender-lead-metrics", element: <LenderLeadMetrics /> },
                                     {
-                                        path: "products", element: <LenderProductParentTab />,
+                                        path: "products",
+                                        element: (
+                                            <ProtectedPage permission={userPermissions.LENDER_PRODUCT.VIEW_LENDER_PRODUCTS} >
+                                                <LenderProductParentTab />
+                                            </ProtectedPage>
+                                        ),
                                         children: [
                                             { path: "", element: <LenderProductFeat /> },
-                                            { path: "add-product", element: <AddLenderProduct /> },
-                                            { path: ":productId/edit", element: <EditLenderProduct /> },
+                                            {
+                                                path: "add-product",
+                                                element: (
+                                                    <ProtectedPage permission={userPermissions.LENDER_PRODUCT.ADD_LENDER_PRODUCT} >
+                                                        <AddLenderProduct />
+                                                    </ProtectedPage>
+                                                ),
+                                            },
+                                            {
+                                                path: ":productId/edit",
+                                                element: (
+                                                    <ProtectedPage permission={userPermissions.LENDER_PRODUCT.EDIT_LENDER_PRODUCT} >
+                                                        <EditLenderProduct />
+                                                    </ProtectedPage>
+                                                ),
+
+                                            },
                                         ]
                                     },
                                     {
-                                        path: "support", element: <LenderSupportParent />,
+                                        path: "support",
+                                        element: (
+                                            <ProtectedPage permission={userPermissions.LENDER_SUPPORT.VIEW_LENDER_SUPPORTS} >
+                                                <LenderSupportParent />
+                                            </ProtectedPage>
+                                        ),
+
                                         children: [
                                             { path: "", element: <LenderSupports /> },
-                                            { path: "add", element: <AddLenderSupport /> },
-                                            { path: "view/:employeeId", element: <ViewLenderSupport /> },
-                                            { path: "view/:employeeId/edit", element: <EditLenderSupport /> },
+                                            {
+                                                path: "add",
+                                                element: (
+                                                    <ProtectedPage permission={userPermissions.LENDER_SUPPORT.ADD_LENDER_SUPPORT} >
+                                                        <AddLenderSupport />
+                                                    </ProtectedPage>
+                                                ),
+
+                                            },
+                                            {
+                                                path: "view/:employeeId",
+                                                element: <ViewLenderSupport />
+                                            },
+                                            {
+                                                path: "view/:employeeId/edit",
+                                                element: (
+                                                    <ProtectedPage permission={userPermissions.LENDER_SUPPORT.EDIT_LENDER_SUPPORT} >
+                                                        <AddLenderSupport />
+                                                    </ProtectedPage>
+                                                ),
+
+                                            },
                                         ]
 
                                     },
-                                    { path: "edit", element: <EditLenderDetails /> },
+                                    {
+                                        path: "edit",
+                                        element: (
+                                            <ProtectedPage permission={userPermissions.LENDER.EDIT_LENDER} >
+                                                <EditLenderDetails />
+                                            </ProtectedPage>
+                                        ),
+                                    },
                                 ]
                             },
                         ]
@@ -163,7 +220,14 @@ export const router = createBrowserRouter([
                         children: [
                             { path: "", element: <StaffManagement /> },
                             { path: "view/:id", element: <StaffView /> },
-                            { path: "add", element: <AddStaff /> },
+                            {
+                                path: "add",
+                                element: (
+                                    <ProtectedPage path={'/staff/add'} >
+                                        <AddStaff />
+                                    </ProtectedPage>
+                                ),
+                            },
                         ]
                     },
                     {

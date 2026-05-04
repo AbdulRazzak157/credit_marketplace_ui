@@ -16,6 +16,7 @@ import DataTableBase from '../../components/DataTableBase';
 import { getBureauScoreColor } from '../../shared/utils';
 import * as XLSX from "xlsx";
 import { toast } from 'react-toastify';
+import { employmentTypes } from '../../constants/subadminPermissions';
 
 const LenderLeadMetrics = () => {
     const { id } = useParams();
@@ -118,11 +119,6 @@ const LenderLeadMetrics = () => {
         setCurrentPage(page);
     };
 
-    const employmentTypes = {
-        SALARIED: "Salaried",
-        SELF_EMPLOYED: "Self Emp",
-        RETIRED: "Retired"
-    }
 
     const downloadExcel = (rows, fileName) => {
         if (!rows || !rows.length) {

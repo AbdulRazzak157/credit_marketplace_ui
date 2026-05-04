@@ -18,6 +18,7 @@ import { useQuery } from '@tanstack/react-query';
 import { LeadStatus } from '../../components/LeadStatus';
 import useDebounce from '../../hooks/useDebounce';
 import CustomCircleLoader from '../../shared/CustomCircleLoader';
+import { employmentTypes } from '../../constants/subadminPermissions';
 
 const ManageLeads = () => {
     const [fromDate, setFromDate] = useState([]);
@@ -195,11 +196,6 @@ const ManageLeads = () => {
     };
 
 
-    const employmentTypes = {
-        SALARIED: "Salaried",
-        SELF_EMPLOYED: "Self Emp",
-        RETIRED: "Retired"
-    }
 
     const columns = [
         {
@@ -477,6 +473,7 @@ const ManageLeads = () => {
                                 { label: "Salaried", value: "SALARIED" },
                                 { label: "Self Employed", value: "SELF_EMPLOYED" },
                                 { label: "Retired", value: "RETIRED" },
+                                { label: "Students", value: "STUDENT" },
                             ]}
                             value={selectedEmploymentType || null}
                             onChange={(option) => setSelectedEmploymentType(option)}

@@ -7,10 +7,12 @@ import { useQuery } from '@tanstack/react-query';
 import API_URL from '../../api/apiConfig';
 import { useAuth } from '../../context/AuthContext';
 import CustomCircleLoader from '../../shared/CustomCircleLoader';
-import { useNavigate, useOutletContext, useParams } from 'react-router-dom';
+import { useLocation, useNavigate, useOutletContext, useParams } from 'react-router-dom';
 import { toast } from 'react-toastify';
 
 const EditLenderDetails = () => {
+      const { pathname } = useLocation();
+      console.log("pathname : ",pathname);
   const { id } = useParams();
   const { register, handleSubmit, formState: { errors, isSubmitting }, reset, control } = useForm();
 

@@ -12,6 +12,8 @@ import { useAuth } from '../../context/AuthContext'
 import API_URL from '../../api/apiConfig'
 import { useQuery } from '@tanstack/react-query'
 import CustomCircleLoader from '../../shared/CustomCircleLoader'
+import HasPermission from '../../components/HasPermission'
+import { userPermissions } from '../../constants/subadminPermissions'
 
 const LenderManagement = () => {
   const [searchKey, setSearchKey] = useState("");

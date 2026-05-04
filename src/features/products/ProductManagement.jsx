@@ -12,6 +12,7 @@ import { Link } from 'react-router-dom';
 import ActionButton from '../../components/buttons/ActionButton';
 import { formatINRShort, formatSentence, normalizeSentence } from '../../helpers';
 import { getBureauScoreColor } from '../../shared/utils';
+import { employmentTypes } from '../../constants/subadminPermissions';
 
 const ProductManagement = () => {
   const [searchKey, setSearchKey] = useState("");
@@ -180,11 +181,6 @@ const ProductManagement = () => {
   };
 
 
-  const employmentTypes = {
-    SALARIED: "Salaried",
-    SELF_EMPLOYED: "Self Emp",
-    RETIRED: "Retired"
-  }
 
   const columns = [
     {

@@ -16,6 +16,7 @@ import { useAuth } from '../../context/AuthContext';
 import useDebounce from '../../hooks/useDebounce';
 import API_URL from '../../api/apiConfig';
 import { LeadStatus } from '../../components/LeadStatus';
+import { employmentTypes } from '../../constants/subadminPermissions';
 
 const LeadManagement = () => {
   const [fromDate, setFromDate] = useState([]);
@@ -161,11 +162,6 @@ const LeadManagement = () => {
   };
 
 
-  const employmentTypes = {
-    SALARIED: "Salaried",
-    SELF_EMPLOYED: "Self Emp",
-    RETIRED: "Retired"
-  }
 
   const columns = [
     {
@@ -283,7 +279,7 @@ const LeadManagement = () => {
         return (
           <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
             {
-              row?.bureauScore === 0 ? "N/A" : (
+              !row?.bureauScore ? "N/A" : (
                 <>
                   <span style={{
                     width: '8px', height: '8px',
@@ -442,6 +438,7 @@ const LeadManagement = () => {
                   { label: "Salaried", value: "SALARIED" },
                   { label: "Self Employed", value: "SELF_EMPLOYED" },
                   { label: "Retired", value: "RETIRED" },
+                  { label: "Students", value: "STUDENT" },
                 ]}
                 value={selectedEmploymentType || null}
                 onChange={(option) => setSelectedEmploymentType(option)}

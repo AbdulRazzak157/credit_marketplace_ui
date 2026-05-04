@@ -26,7 +26,7 @@ const ForgotPassword = () => {
       // const response = await fetch(`${API_URL.auth.sendLoginOTP}`, {
       //   method: "POST",
       //   headers: {
-      //     "otp-session": otpSession,
+          // "otp-session": otpSession,
       //     "Content-Type": "application/json",
       //   },
       // });

@@ -20,9 +20,9 @@ if (type === 'DEV') {
 const API_URL = {
 
     auth:{
-        login: `${API_BASE_URL}/api/v1/auth/sign-in`,
+        login: `${API_BASE_URL}/api/auth/sign-in`,
         sendLoginOTP: `${API_BASE_URL}/api/auth/login/send-otp`,
-        verifyLoginOTP: `${API_BASE_URL}/api/v1/auth/login/verify-otp`
+        verifyLoginOTP: `${API_BASE_URL}/api/auth/login/verify-otp`
     },
 
     profile: {
@@ -87,7 +87,8 @@ const API_URL = {
         updateRemarkDetails: (leadId) => `${API_BASE_URL}/api/v1/leads/${leadId}/remarks`,
         getBureauReport: (leadId) => `${API_BASE_URL}/api/v1/leads/${leadId}/bureau-report`,
         getUpdateBureauReport: (leadId) => `${API_BASE_URL}/api/v1/leads/${leadId}/update-bureau-report`,
-        getLeadMatchedProducts: (leadId) => `${API_BASE_URL}/api/v1/leads/${leadId}/matched-products/details`
+        getLeadMatchedProducts: (leadId) => `${API_BASE_URL}/api/v1/leads/${leadId}/matched-products/details`,
+        getLeadActivityLogs: (leadId)=>`${API_BASE_URL}/api/v1/leads/${leadId}/audit-logs`
     }
 
 };
