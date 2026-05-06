@@ -393,7 +393,7 @@ const ManageLeads = () => {
                 <ManageLeadCard value={formatINRShort(+manageLeadCards?.amount)} bgColor="bg-[#10B981]" icon={<Icon icon="ic:baseline-currency-rupee" width="24" height="24" />} label="Disbursed Amount" />
             </div>
             <div className='bg-white px-2 md:px-4 py-4 rounded-md grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4 md:gap-6'>
-                <div className='flex flex-col gap-2 w-full'>
+                {/* <div className='flex flex-col gap-2 w-full'>
                     <label htmlFor="search" className="text-gray-600 text-sm">Search by Staff Id</label>
                     <div className="flex items-center gap-1 border border-[#d1d5db] rounded-md py-2 px-2 w-full">
                         <IoSearch className="text-[#707B8F]"
@@ -406,7 +406,7 @@ const ManageLeads = () => {
                             placeholder="Ex: STF93623236577"
                         />
                     </div>
-                </div>
+                </div> */}
                 <div className='flex flex-col gap-2 w-full'>
                     <label htmlFor="search" className="text-gray-600 text-sm">Search by lead Id</label>
                     <div className="flex items-center gap-1 border border-[#d1d5db] rounded-md py-2 px-2 w-full">

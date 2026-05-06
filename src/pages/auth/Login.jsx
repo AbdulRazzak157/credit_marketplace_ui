@@ -18,7 +18,7 @@ const Login = () => {
 
     const navigate = useNavigate();
 
-    const { login, loading, otpSession, setOtpSession, userEmail, setUserEmail } = useAuth();
+    const { loading, setOtpSession, setUserEmail } = useAuth();
 
     const { register, handleSubmit, formState: { errors, isSubmitting }, reset } = useForm();
 
@@ -64,7 +64,7 @@ const Login = () => {
 
             navigate("/login-verification");
         } catch (error) {
-            console.log({error})
+            console.log({ error })
             toast.error(error?.message);
             console.error("Login error:", error);
             setIsLogging(false);

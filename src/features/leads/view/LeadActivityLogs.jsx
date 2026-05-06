@@ -1,79 +1,86 @@
 import { useMemo } from "react";
 
 const ACTIVITY_TYPES = {
-  assign: { label: "Lead assigned", dotClass: "bg-blue-600", pillClass: "bg-blue-50 text-blue-800 ring-blue-200" },
-  reassign: { label: "Lead reassigned", dotClass: "bg-amber-500", pillClass: "bg-amber-50 text-amber-800 ring-amber-200" },
-  update: { label: "Details updated", dotClass: "bg-emerald-500", pillClass: "bg-emerald-50 text-emerald-800 ring-emerald-200" },
-  status: { label: "Status changed", dotClass: "bg-rose-500", pillClass: "bg-rose-50 text-rose-800 ring-rose-200" },
-  comment: { label: "Comment added", dotClass: "bg-slate-400", pillClass: "bg-slate-100 text-slate-600 ring-slate-200" },
+  Assignment: { label: "Lead assigned", dotClass: "bg-blue-600", pillClass: "bg-blue-50 text-blue-800 ring-blue-200" },
+  Bureau: { label: "Lead assigned", dotClass: "bg-blue-600", pillClass: "bg-blue-50 text-blue-800 ring-blue-200" },
+  Reassignment: { label: "Lead reassigned", dotClass: "bg-amber-500", pillClass: "bg-amber-50 text-amber-800 ring-amber-200" },
+  Update: { label: "Details updated", dotClass: "bg-emerald-500", pillClass: "bg-emerald-50 text-emerald-800 ring-emerald-200" },
+  Capturing: { label: "Status changed", dotClass: "bg-rose-500", pillClass: "bg-rose-50 text-rose-800 ring-rose-200" },
+  // Bureau: { label: "Comment added", dotClass: "bg-slate-400", pillClass: "bg-slate-100 text-slate-600 ring-slate-200" },
   created: { label: "Lead created", dotClass: "bg-slate-400", pillClass: "bg-slate-100 text-slate-600 ring-slate-200" },
 };
 
-const MOCK_ACTIVITIES = [
-  {
-    id: 1, type: "reassign", date: "2026-04-28", time: "10:42 AM",
-    actor: { name: "Ravi Patel", role: "Manager", initials: "RP", bg: "bg-amber-100", text: "text-amber-800" },
-    log: "Specialist required",
-    changes: [{ field: "Assigned staff", oldVal: "Anjali Sharma", newVal: "Kiran Mehta" }],
-  },
-  {
-    id: 2, type: "status", date: "2026-04-28", time: "9:15 AM",
-    actor: { name: "Kiran Mehta", role: "Staff", initials: "KM", bg: "bg-blue-100", text: "text-blue-800" },
-    log: "Staff on leave",
-    changes: [{ field: "Lead status", oldVal: "New", newVal: "In Progress" }],
-  },
-  {
-    id: 3, type: "update", date: "2026-04-27", time: "4:30 PM",
-    actor: { name: "Anjali Sharma", role: "Staff", initials: "AS", bg: "bg-emerald-100", text: "text-emerald-800" },
-    log: "Staff on leave",
-    changes: [
-      { field: "Loan amount", oldVal: "₹15,00,000", newVal: "₹20,00,000" },
-      { field: "Loan tenure", oldVal: "10 years", newVal: "15 years" },
-      { field: "Employment type", oldVal: "Salaried", newVal: "Self-employed" },
-    ],
-  },
-  {
-    id: 4, type: "comment", date: "2026-04-27", time: "2:10 PM",
-    actor: { name: "Anjali Sharma", role: "Staff", initials: "AS", bg: "bg-emerald-100", text: "text-emerald-800" },
-    comment: "Customer called and requested to increase loan amount. Documents to be submitted by Friday.",
-  },
-  {
-    id: 5, type: "reassign", date: "2026-04-27", time: "11:00 AM",
-    actor: { name: "Ravi Patel", role: "Manager", initials: "RP", bg: "bg-amber-100", text: "text-amber-800" },
-    reason: "Staff on leave",
-    changes: [{ field: "Assigned staff", oldVal: "Priya Nair", newVal: "Anjali Sharma" }],
-  },
-  {
-    id: 6, type: "update", date: "2026-04-25", time: "3:45 PM",
-    actor: { name: "Priya Nair", role: "Staff", initials: "PN", bg: "bg-violet-100", text: "text-violet-800" },
-    changes: [
-      { field: "Phone number", oldVal: "9876500000", newVal: "9876543210" },
-      { field: "Email", oldVal: "old@gmail.com", newVal: "new@gmail.com" },
-    ],
-  },
-  {
-    id: 7, type: "status", date: "2026-04-25", time: "10:05 AM",
-    actor: { name: "Priya Nair", role: "Staff", initials: "PN", bg: "bg-violet-100", text: "text-violet-800" },
-    changes: [{ field: "Lead status", oldVal: "Unassigned", newVal: "New" }],
-  },
-  {
-    id: 8, type: "assign", date: "2026-04-24", time: "9:00 AM",
-    actor: { name: "Ravi Patel", role: "Manager", initials: "RP", bg: "bg-amber-100", text: "text-amber-800" },
-    reason: "Manual assignment by manager",
-    changes: [{ field: "Assigned to", oldVal: null, newVal: "Priya Nair" }],
-  },
-  {
-    id: 9, type: "created", date: "2026-04-24", time: "8:52 AM",
-    actor: { name: "System", role: "", initials: "SY", bg: "bg-slate-100", text: "text-slate-600" },
-    meta: [
-      { field: "Lead ID", value: "#LD-2026-00412" },
-      { field: "Customer", value: "Suresh Kumar" },
-      { field: "Product", value: "Home Loan" },
-    ],
-    badge: "Source: Web form",
-  },
-];
+// const MOCK_ACTIVITIES = [
+//   {
+//     id: 1, type: "reassign", date: "2026-04-28", time: "10:42 AM",
+//     actor: { name: "Ravi Patel", role: "Manager", initials: "RP", bg: "bg-amber-100", text: "text-amber-800" },
+//     log: "Specialist required",
+//     changes: [{ field: "Assigned staff", oldVal: "Anjali Sharma", newVal: "Kiran Mehta" }],
+//   },
+//   {
+//     id: 2, type: "status", date: "2026-04-28", time: "9:15 AM",
+//     actor: { name: "Kiran Mehta", role: "Staff", initials: "KM", bg: "bg-blue-100", text: "text-blue-800" },
+//     log: "Staff on leave",
+//     changes: [{ field: "Lead status", oldVal: "New", newVal: "In Progress" }],
+//   },
+//   {
+//     id: 3, type: "update", date: "2026-04-27", time: "4:30 PM",
+//     actor: { name: "Anjali Sharma", role: "Staff", initials: "AS", bg: "bg-emerald-100", text: "text-emerald-800" },
+//     log: "Staff on leave",
+//     changes: [
+//       { field: "Loan amount", oldVal: "₹15,00,000", newVal: "₹20,00,000" },
+//       { field: "Loan tenure", oldVal: "10 years", newVal: "15 years" },
+//       { field: "Employment type", oldVal: "Salaried", newVal: "Self-employed" },
+//     ],
+//   },
+//   {
+//     id: 4, type: "comment", date: "2026-04-27", time: "2:10 PM",
+//     actor: { name: "Anjali Sharma", role: "Staff", initials: "AS", bg: "bg-emerald-100", text: "text-emerald-800" },
+//     comment: "Customer called and requested to increase loan amount. Documents to be submitted by Friday.",
+//   },
+//   {
+//     id: 5, type: "reassign", date: "2026-04-27", time: "11:00 AM",
+//     actor: { name: "Ravi Patel", role: "Manager", initials: "RP", bg: "bg-amber-100", text: "text-amber-800" },
+//     reason: "Staff on leave",
+//     changes: [{ field: "Assigned staff", oldVal: "Priya Nair", newVal: "Anjali Sharma" }],
+//   },
+//   {
+//     id: 6, type: "update", date: "2026-04-25", time: "3:45 PM",
+//     actor: { name: "Priya Nair", role: "Staff", initials: "PN", bg: "bg-violet-100", text: "text-violet-800" },
+//     changes: [
+//       { field: "Phone number", oldVal: "9876500000", newVal: "9876543210" },
+//       { field: "Email", oldVal: "old@gmail.com", newVal: "new@gmail.com" },
+//     ],
+//   },
+//   {
+//     id: 7, type: "status", date: "2026-04-25", time: "10:05 AM",
+//     actor: { name: "Priya Nair", role: "Staff", initials: "PN", bg: "bg-violet-100", text: "text-violet-800" },
+//     changes: [{ field: "Lead status", oldVal: "Unassigned", newVal: "New" }],
+//   },
+//   {
+//     id: 8, type: "assign", date: "2026-04-24", time: "9:00 AM",
+//     actor: { name: "Ravi Patel", role: "Manager", initials: "RP", bg: "bg-amber-100", text: "text-amber-800" },
+//     reason: "Manual assignment by manager",
+//     changes: [{ field: "Assigned to", oldVal: null, newVal: "Priya Nair" }],
+//   },
+//   {
+//     id: 9, type: "created", date: "2026-04-24", time: "8:52 AM",
+//     actor: { name: "System", role: "", initials: "SY", bg: "bg-slate-100", text: "text-slate-600" },
+//     meta: [
+//       { field: "Lead ID", value: "#LD-2026-00412" },
+//       { field: "Customer", value: "Suresh Kumar" },
+//       { field: "Product", value: "Home Loan" },
+//     ],
+//     badge: "Source: Web form",
+//   },
+// ];
 
+const ROLE_COLORS = {
+  STAFF: { bg: "bg-amber-100", text: "text-amber-800" },
+  MANAGER: { bg: "bg-blue-100", text: "text-blue-800" },
+  // : { bg: "bg-emerald-100", text: "text-emerald-800" },
+  SYSTEM: { bg: "bg-slate-100", text: "text-slate-600" },
+};
 function groupByDate(activities) {
   return activities.reduce((acc, a) => {
     if (!acc[a.date]) acc[a.date] = [];
@@ -93,8 +100,9 @@ function formatDateLabel(dateStr) {
 }
 
 function Avatar({ actor }) {
+  const colors = ROLE_COLORS[actor?.role]
   return (
-    <span className={`inline-flex items-center justify-center w-7 h-7 rounded-full text-[10px] font-semibold flex-shrink-0 ${actor.bg} ${actor.text}`}>
+    <span className={`inline-flex items-center justify-center w-7 h-7 rounded-full text-[10px] font-semibold flex-shrink-0 ${colors?.bg} ${colors?.text}`}>
       {actor.initials}
     </span>
   );
@@ -122,7 +130,7 @@ function LogEntry({ activity, isLast }) {
     <div className="flex gap-3 relative">
       {/* timeline spine */}
       <div className="flex flex-col items-center flex-shrink-0 pt-0.5">
-        <div className={`w-2.5 h-2.5 rounded-full ring-2 ring-white flex-shrink-0 z-10 ${config.dotClass}`} />
+        <div className={`w-2.5 h-2.5 rounded-full ring-2 ring-white flex-shrink-0 z-10 ${config?.dotClass}`} />
         {!isLast && <div className="w-px flex-1 bg-slate-200 mt-1" />}
       </div>
 
@@ -133,21 +141,21 @@ function LogEntry({ activity, isLast }) {
           <Avatar actor={activity.actor} />
           <span className="text-[13px] font-semibold text-slate-800">{activity.actor.name}</span>
           {activity.actor.role && (
-            <span className="text-[11px] text-slate-400">({activity.actor.role})</span>
+            <span className="text-slate-400">(<span className="text-[10px] text-slate-400">{activity.actor.role}</span>)</span>
           )}
           <span className="text-slate-300 text-[11px]">·</span>
-          <span className={`text-[11px] font-medium px-2 py-0.5 rounded-full ring-1 ${config.pillClass}`}>
-            {config.label}
+          <span className={`text-[11px] font-medium px-2 py-0.5 rounded-full ring-1 ${config?.pillClass}`}>
+            {activity?.type}
           </span>
           <span className="text-[11px] text-slate-400 ml-auto tabular-nums">{activity.time}</span>
         </div>
 
         {/* reason */}
-        {activity.reason && (
-          <div className="mb-2">
+        {activity.log && (
+          <div className="my-2">
             <span className="inline-flex items-center gap-1.5 text-[11px] text-slate-500 bg-slate-50 border border-slate-200 rounded-md px-2 py-0.5">
               <span className="w-1.5 h-1.5 rounded-full bg-slate-400 inline-block" />
-              Reason: {activity.reason}
+              {activity.log}
             </span>
           </div>
         )}
@@ -171,14 +179,14 @@ function LogEntry({ activity, isLast }) {
         )}
 
         {/* comment */}
-        {activity.comment && (
+        {/* {activity.comment && (
           <blockquote className="text-[12px] text-slate-500 italic border-l-2 border-slate-200 pl-3 mt-1 leading-relaxed">
             "{activity.comment}"
           </blockquote>
-        )}
+        )} */}
 
         {/* meta (created) */}
-        {activity.meta && (
+        {/* {activity.meta && (
           <div className="flex flex-col gap-1">
             {activity.badge && (
               <span className="inline-flex items-center text-[11px] text-slate-500 bg-slate-50 border border-slate-200 rounded-md px-2 py-0.5 mb-1 w-fit">
@@ -192,7 +200,7 @@ function LogEntry({ activity, isLast }) {
               </div>
             ))}
           </div>
-        )}
+        )} */}
       </div>
     </div>
   );
@@ -210,14 +218,14 @@ function DateSeparator({ label }) {
   );
 }
 
-export default function LeadActivityLogs({ activities = MOCK_ACTIVITIES }) {
+export default function LeadActivityLogs({ activities  }) {
   const grouped = useMemo(() => groupByDate(activities), [activities]);
   const sortedDates = Object.keys(grouped).sort((a, b) => b.localeCompare(a));
   const totalEvents = activities.length;
 
   return (
-    <div className="flex justify-center w-full bg-slate-50 min-h-screen py-8 px-4">
-      <div className="w-full max-w-2xl">
+    <div className="flex justify-center w-full min-h-screen py-8 px-4">
+      <div className="w-full max-w-2xl ">
         {/* header */}
         <div className="flex items-center justify-between mb-6 pb-4 border-b border-slate-200">
           <div>

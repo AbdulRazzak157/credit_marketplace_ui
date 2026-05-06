@@ -94,16 +94,16 @@ const TwoFactorEmailOTP = () => {
                 <p className='text-sm text-[#424754]'>Request an OTP to verify email and securely access your account.</p>
             </div>
             <div className='mb-10'>
-                <div className='flex justify-between items-end gap-2 py-1'>
+              { !requestedOtp && <div className='flex justify-between items-end gap-2 py-1'>
                     <div className="w-full flex flex-col gap-1">
                         <label htmlFor="Login-email" className="font-medium text-xs md:text-sm">Email Address*</label>
-                        <div className='flex justify-between flex-row bg-[#f6f7f8]  border border-[#CCCCCC] items-center rounded-md py-1 px-3'>
+                        <div className='flex justify-between bg-gray-200 flex-row cursor-not-allowed border border-[#CCCCCC] items-center rounded-md py-1 px-3'>
                             <input
                                 type='text'
                                 value={userEmail}
                                 placeholder="Enter Email"
                                 disabled={true}
-                                className="w-full outline-none border-none placeholder:text-[#CCCCCC] placeholder:text-sm"
+                                className="w-full cursor-not-allowed outline-none border-none placeholder:text-[#CCCCCC] placeholder:text-sm"
                             />
                         </div>
                     </div>
@@ -114,14 +114,14 @@ const TwoFactorEmailOTP = () => {
                             <button onClick={requestOtpHandler} className='min-w-25 text-xs bg-(--primary) py-2 px-4 rounded-md text-white whitespace-nowrap'>Request OTP</button>
                         )
                     }
-                </div>
+                </div>}
                 {
                     requestedOtp && (
-                        <div className='space-y-4 pb-10'>
+                        <div className='space-y-4 pb-10 mt-2'>
                             <div className="flex items-center gap-3 my-5">
                                 <div className="flex-1 h-px bg-gray-200" />
-                                <span className="text-xs font-medium text-gray-400 whitespace-nowrap">
-                                    Enter the 6-digit code below
+                                <span className="text-[11px] font-medium text-gray-400 whitespace-nowrap">
+                                    Enter the 6-digit code below has sent to this email <span className='text-(--primary)'>{userEmail}</span>
                                 </span>
                                 <div className="flex-1 h-px bg-gray-200" />
                             </div>

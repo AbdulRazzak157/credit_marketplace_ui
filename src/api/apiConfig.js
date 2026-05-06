@@ -1,5 +1,3 @@
-import { UpdateLoanDetailsModal } from "../components/UpdateLoanDetailsModal";
-import app from "../firebase";
 
 
 export const type = "DEV";
@@ -20,7 +18,7 @@ if (type === 'DEV') {
 
 const API_URL = {
 
-    auth:{
+    auth: {
         login: `${API_BASE_URL}/auth/sign-in`,
         sendLoginOTP: `${API_BASE_URL}/auth/login/send-otp`,
         verifyLoginOTP: `${API_BASE_URL}/auth/login/verify-otp`,
@@ -92,7 +90,7 @@ const API_URL = {
         getBureauReport: (leadId) => `${API_BASE_URL}/api/v1/leads/${leadId}/bureau-report`,
         getUpdateBureauReport: (leadId) => `${API_BASE_URL}/api/v1/leads/${leadId}/update-bureau-report`,
         getLeadMatchedProducts: (leadId) => `${API_BASE_URL}/api/v1/leads/${leadId}/matched-products/details`,
-        getLeadActivityLogs: (leadId)=>`${API_BASE_URL}/api/v1/leads/${leadId}/audit-logs`
+        getLeadActivityLogs: (leadId) => `${API_BASE_URL}/api/v1/leads/${leadId}/audit-logs`
     }
 
 };
