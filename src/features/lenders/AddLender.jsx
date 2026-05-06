@@ -100,7 +100,9 @@ const AddLender = () => {
                     { label: "NBFC", value: "NBFC" },
                     { label: "Bank", value: "Bank" },
                     { label: "SFB", value: "SFB" },
-                    { label: "Other", value: "Other" },
+                    { label: "LSP", value: "LSP" },
+                    { label: "FINTECH", value: "FINTECH" },
+                    { label: "NBFC P2P", value: "NBFC P2P" },
                   ]}
                   placeholder="Eg: NBFC"
                   // styles={reactSelectCustomStyles}
@@ -199,7 +201,7 @@ const AddLender = () => {
               {...register("lenderCustomerCareEmail", {
                 required: "*Customer Care Email is required",
                 pattern: {
-                  value: /^[a-zA-Z0-9]+@[a-zA-Z0-9]+\.[a-zA-Z]{2,}$/,
+                  value: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
                   message: "Enter a valid email address",
                 },
               })}
@@ -210,7 +212,7 @@ const AddLender = () => {
             }
           </div>
           <div className='flex flex-col gap-1'>
-            <label htmlFor="lender-address" className='text-gray-600 text-sm sm:text-base'>Customer Case Phone Number*</label>
+            <label htmlFor="lender-address" className='text-gray-600 text-sm sm:text-base'>Customer Care Phone Number*</label>
             <input
               id="lenderCustomerCarePhone"
               type="text"

@@ -34,7 +34,7 @@ const API_URL = {
     },
 
     subAdminManagement: {
-        addStaffAdmin: `${API_BASE_URL}/api/admin/sub-admins`,
+        addSubAdmin: `${API_BASE_URL}/api/admin/sub-admins`,
         getSubAdminList: `${API_BASE_URL}/api/admin/sub-admins`,
         getSpecificStaffAdmin: (id) => `${API_BASE_URL}/api/admin/sub-admins/${id}`,
         updateStaffAdminStatus: (id) => `${API_BASE_URL}/api/admin/sub-admins/${id}/status`,
