@@ -20,7 +20,7 @@ const ForgotPassword = () => {
     setSendOtpLoading(true)
 
     try {
-      await new Promise(resolve => setTimeout(resolve, 3000));
+      // await new Promise(resolve => setTimeout(resolve, 3000));
 
       const response = await fetch(`${API_URL.auth.sentForgotPasswordEmailOtp(userEmail)}`, {
         method: "POST",
@@ -31,7 +31,7 @@ const ForgotPassword = () => {
 
       if (!response.ok) {
         const errorResult = await response.json();
-        throw new Error(errorResult?.message);
+        throw new Error(errorResult?.response?.message);
       }
 
       const result = await response.json();
@@ -68,7 +68,7 @@ const ForgotPassword = () => {
 
       if (!response.ok) {
         const errorResult = await response.json();
-        throw new Error(errorResult?.message);
+        throw new Error(errorResult?.response?.message);
       }
 
       const result = await response.json();
@@ -90,7 +90,7 @@ const ForgotPassword = () => {
         <p className='text-sm text-[#424754]'>Enter your email to receive a password reset OTP.</p>
       </div>
       <div className='mb-10'>
-        <div className='flex justify-between items-end gap-2 py-1'>
+       {  !requestedOtp && ( <div className='flex justify-between items-end gap-2 py-1'>
           <div className="w-full flex flex-col gap-1">
             <label htmlFor="Login-email" className="font-medium text-xs md:text-sm">Email Address*</label>
             <div className='flex justify-between flex-row  border border-[#CCCCCC] items-center rounded-md py-1 px-3'>
@@ -112,13 +112,14 @@ const ForgotPassword = () => {
             )
           }
         </div>
+        )}
         {
           requestedOtp && (
             <div className='space-y-4 pb-10'>
               <div className="flex items-center gap-3 my-5">
                 <div className="flex-1 h-px bg-gray-200" />
                 <span className="text-xs font-medium text-gray-400 whitespace-nowrap">
-                  Enter the 6-digit code below
+                  Enter the 6-digit code below has sent to this email <span className='text-(--primary)'>{userEmail}</span>
                 </span>
                 <div className="flex-1 h-px bg-gray-200" />
               </div>
