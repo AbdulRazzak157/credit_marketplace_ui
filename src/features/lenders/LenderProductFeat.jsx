@@ -86,7 +86,7 @@ const LenderProductFeat = () => {
             });
             if (!response.ok) {
                 const errorResult = await response.json();
-                throw new Error(errorResult?.message);
+                throw new Error(errorResult?.response?.message);
             }
             await response.json();
             await refetch();

@@ -195,9 +195,9 @@ const EditLenderSupport = () => {
         <div className='flex flex-col gap-1'>
           <label className='text-gray-600 text-sm sm:text-base'>Enter Email id*</label>
           <input
-            id="addStaffEmail"
+            id="supportEmail"
             type="text"
-            name="addStaffEmail"
+            name="supportEmail"
             placeholder="Enter Email Address"
             {...register('supportEmail', {
               required: '*Email is required',

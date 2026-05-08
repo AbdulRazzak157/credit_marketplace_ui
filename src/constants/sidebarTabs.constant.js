@@ -1,22 +1,16 @@
 
 export const sidebarItems = [
-    {
-        name: "Overview",
-        to: "/",
-        // icon: "solar:home-2-outline",
-        icon: "bitcoin-icons:graph-outline",
-        iconClass: "w-[24px] h-[24px]",
-    },
+    // {
+    //     name: "Overview",
+    //     to: "/",
+    //     // icon: "solar:home-2-outline",
+    //     icon: "bitcoin-icons:graph-outline",
+    //     iconClass: "w-[24px] h-[24px]",
+    // },
     {
         name: "Dashboard",
-        to: "/dashboard",
+        to: "/",
         icon: "solar:widget-2-outline",
-        iconClass: "w-[24px] h-[24px]",
-    },
-    {
-        name: "Sub Admins",
-        to: "/sub-admins",
-        icon: "solar:users-group-two-rounded-outline",
         iconClass: "w-[24px] h-[24px]",
     },
     {
@@ -33,7 +27,7 @@ export const sidebarItems = [
         iconClass: "w-[24px] h-[24px]",
     },
     {
-        name: "Lender Management",
+        name: "Lenders",
         to: "/lenders",
         icon: "solar:buildings-2-outline",
         // icon: "mdi:bank-outline",
@@ -43,24 +37,30 @@ export const sidebarItems = [
         iconClass: "w-[24px] h-[24px]",
     },
     {
-        name: "Staff Management",
-        to: "/staff",
-        icon: "solar:user-id-outline",
-        iconClass: "w-[24px] h-[24px]",
-    },
-    {
-        name: "Product Management",
+        name: "Products",
         to: "/products",
         icon: "solar:box-outline",
         iconClass: "w-[24px] h-[24px]",
     },
     {
-        name: "Reports",
-        to: "/reports",
-        // icon: "solar:chart-outline",
-        icon: "lsicon:report-outline",
+        name: "Sub Admins",
+        to: "/sub-admins",
+        icon: "solar:users-group-two-rounded-outline",
         iconClass: "w-[24px] h-[24px]",
     },
+    {
+        name: "Staff",
+        to: "/staff",
+        icon: "solar:user-id-outline",
+        iconClass: "w-[24px] h-[24px]",
+    },
+    // {
+    //     name: "Reports",
+    //     to: "/reports",
+    //     // icon: "solar:chart-outline",
+    //     icon: "lsicon:report-outline",
+    //     iconClass: "w-[24px] h-[24px]",
+    // },
     {
         name: "Profile / Settings",
         to: "/profile",

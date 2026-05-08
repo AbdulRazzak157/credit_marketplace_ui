@@ -7,7 +7,7 @@ const HasPermission = ({ permission, children, fallback = null }) => {
 
     if (userProfile?.userRole === "ADMIN") return children;
 
-    if (userProfile?.userRole === "EXECUTIVE" && permission !== userPermissions.LEADS_MANAGEMENT.ASSIGN_LEADS) {
+    if (userProfile?.userRole === "EXECUTIVE" && permission !== userPermissions.LEADS.ASSIGN_LEADS) {
         return children;
     };
 

@@ -31,6 +31,8 @@ const Sidebar = () => {
             const required = PERMISSIONS_MAP[path];
             return required ? permissions.has(required) : true;
         })
+
+        console.log("updated tabs : ",updatedSidebarItems);
     }
 
     const handleLogout = () => {

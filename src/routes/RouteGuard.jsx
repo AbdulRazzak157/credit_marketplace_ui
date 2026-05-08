@@ -39,8 +39,8 @@ export const PublicRoute = () => {
 const PERMISSIONS_MAP = {
     '/lenders': userPermissions.LENDER.VIEW_LENDERS,
     '/staff': userPermissions.EXECUTIVES.VIEW_EXECUTIVES,
-    '/leads': userPermissions.LEADS_MANAGEMENT.VIEW_LEADS,
-    '/manage-leads': userPermissions.LEADS_MANAGEMENT.VIEW_MANAGE_LEADS,
+    '/leads': userPermissions.LEADS.VIEW_LEADS,
+    '/manage-leads': userPermissions.LEADS.VIEW_MANAGE_LEADS,
     '/products': userPermissions.LENDER_PRODUCT.VIEW_LENDER_PRODUCTS,
 
     // LENDER

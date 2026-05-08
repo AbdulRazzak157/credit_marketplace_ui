@@ -15,9 +15,9 @@ export const quickActionOptions = [
         to: "/products"
     },
     {
-        label: "Add New Executive",
-        value: "add_new_executive",
-        to: "/executives"
+        label: "Add New Staff",
+        value: "add_new_staff",
+        to: "/staff"
     },
     {
         label: "Assign Lead",

@@ -7,6 +7,8 @@ import { getUserSidebarItems } from "../constants/sidebarTabs.constant";
 import assets from "../constants/assets.constant";
 import QuickActions from "../components/QuickActions";
 import LogoutModal from "../components/LogoutModal";
+import HasPermission from "../components/HasPermission";
+import { userPermissions } from "../constants/subadminPermissions";
 
 export default function MobileSidebar({ isOpen, onClose }) {
     const { pathname } = useLocation();
@@ -15,7 +17,25 @@ export default function MobileSidebar({ isOpen, onClose }) {
 
 
 
-    const updatedSidebarItems = getUserSidebarItems(userProfile);
+    let updatedSidebarItems = getUserSidebarItems(userProfile);
+
+    if (userProfile?.permissions?.length > 0) {
+        const PERMISSIONS_MAP = {
+            '/lenders': 'VIEW_LENDERS',
+            '/staff': 'VIEW_EXECUTIVES',
+            '/leads': 'VIEW_LEADS',
+            '/manage-leads': 'VIEW_MANAGE_LEADS',
+            '/products': 'VIEW_LENDER_PRODUCTS',
+        }
+        const permissions = new Set(userProfile?.permissions || []);
+        updatedSidebarItems = updatedSidebarItems?.filter((tab) => {
+            const path = tab?.to?.toLowerCase();
+            const required = PERMISSIONS_MAP[path];
+            return required ? permissions.has(required) : true;
+        })
+
+        console.log("updated tabs : ", updatedSidebarItems);
+    }
 
     const handleLogout = () => {
         setIsLogoutModalOpen(true);
@@ -50,7 +70,12 @@ export default function MobileSidebar({ isOpen, onClose }) {
 
 
                     <div className="px-4 max-sm:px-2 mb-4">
-                        <QuickActions />
+                        {
+                            userProfile?.userRole !== "EXECUTIVE" && (
+                                <QuickActions />
+                            )
+                        }
+
                     </div>
 
                     <nav className="flex flex-col justify-between min-h-[calc(100vh-120px)] px-2">

@@ -14,7 +14,7 @@ import moment from 'moment/moment';
 import useDebounce from '../../hooks/useDebounce';
 import { toast } from 'react-toastify';
 import CustomThreeDotsLoader from '../../shared/CustomThreeDotsLoader';
-import { normalizeSentence, truncateString } from '../../helpers';
+import { formatSentence, normalizeSentence, truncateString } from '../../helpers';
 
 const StaffManagement = () => {
 
@@ -57,7 +57,7 @@ const StaffManagement = () => {
       const data = {
         totalStaff: result?.response?.cards?.total || 0,
         activeStaff: result?.response?.cards?.active || 0,
-        inactiveStaff: result?.response?.cards?.inactive || 0,
+        inactiveStaff: result?.response?.cards?.inActive || 0,
       }
       console.log({ data })
 
@@ -68,7 +68,7 @@ const StaffManagement = () => {
     }
   }
 
-  const { data: staffStatCards, isLoading } = useQuery({
+  const { data: staffStatCards, isLoading, refetch: refetch2 } = useQuery({
     queryKey: ["getStaffStatCards"],
     queryFn: getStaffStatCards
   });
@@ -152,6 +152,7 @@ const StaffManagement = () => {
       const result = await response.json();
       console.log("result : ", result);
       await refetch();
+      await refetch2();
       toast.success("Staff Status Updated Successfully")
     } catch (error) {
       toast.error(error?.message)
@@ -242,6 +243,17 @@ const StaffManagement = () => {
       width: "150px"
     },
     {
+      name: "Onboarded By",
+      selector: (row) => (
+        <div >
+          <div className='text-sm font-medium text-(--primary)'>{formatSentence(row?.onboardedBy)}</div>
+          { row?.onboardedBy !== "Admin" && <div className='text-xs '>{normalizeSentence(row?.onboardedUserDesignation)}</div>}
+        </div>
+      ),
+      center: "true",
+      width: "190px"
+    },
+    {
       name: "Onboarded On",
       selector: (row) => (
         <div className='text-sm font-medium text-(--primary)'>
@@ -313,13 +325,13 @@ const StaffManagement = () => {
                 value={searchKey}
                 onChange={(e) => setSearchKey(e.target.value)}
                 className="outline-none placeholder:text-[#707B8F] placeholder:text-xs w-full text-xs text-[#232323]"
-                placeholder="Eg:-EXEC123456789012"
+                placeholder="Eg:- STF123456789012"
               />
             </div>
           </div>
         </div>
         <div className='flex flex-col gap-2'>
-          <h2 className='text-xl text-(--primary) font-semibold'>List Of staff Members</h2>
+          <h2 className='text-xl text-(--primary) font-semibold'>List Of Staff Members</h2>
           {
             isStaffLoading ? (
               <div className='flex justify-center items-center w-full h-52'>

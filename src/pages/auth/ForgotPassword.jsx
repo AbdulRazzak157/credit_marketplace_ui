@@ -1,6 +1,6 @@
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useRef, useState } from 'react'
 import { useAuth } from '../../context/AuthContext';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import API_URL from '../../api/apiConfig';
 import CustomThreeDotsLoader from '../../shared/CustomThreeDotsLoader';
 import { toast } from 'react-toastify';
@@ -17,10 +17,15 @@ const ForgotPassword = () => {
 
   // requesting otp
   const requestOtpHandler = async () => {
+
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (userEmail && !emailRegex.test(userEmail?.toLowerCase())) {
+      return toast.error("Invalid Email Format.");
+    }
+
     setSendOtpLoading(true)
 
     try {
-
       const response = await fetch(`${API_URL.auth.sentForgotPasswordEmailOtp(userEmail)}`, {
         method: "POST",
         headers: {
@@ -84,55 +89,72 @@ const ForgotPassword = () => {
 
   return (
     <div className='space-y-4 -mt-5'>
-      <div className='space-y-1'>
-        <h2 className='text-lg font-semibold text-(--primary)'>Verify your identity</h2>
-        <p className='text-sm text-[#424754]'>Enter your email to receive a password reset OTP.</p>
-      </div>
+
       <div className='mb-10'>
-        {!requestedOtp && (<div className='flex justify-between items-end gap-2 py-1'>
-          <div className="w-full flex flex-col gap-1">
-            <label htmlFor="Login-email" className="font-medium text-xs md:text-sm">Email Address*</label>
-            <div className='flex justify-between flex-row  border border-[#CCCCCC] items-center rounded-md py-1 px-3'>
-              <input
-                type='text'
-                value={userEmail}
-                placeholder="Enter Email"
-                // disabled={true}
-                onChange={(e) => setUserEmail(e.target.value)}
-                className="w-full outline-none border-none placeholder:text-[#CCCCCC] placeholder:text-sm"
-              />
+        {!requestedOtp && (
+          <>
+            <div className='space-y-1 mt-3'>
+              {/* <h2 className='text-lg font-semibold text-(--primary)'>Verify your identity</h2> */}
+              <p className='text-sm text-[#424754]'>Enter your email to receive a password reset OTP.</p>
             </div>
-          </div>
-          {
-            sendOtpLoading ? (
-              <div className='min-w-25 flex justify-center items-center text-xs py-2.75 px-4 rounded-md whitespace-nowrap border border-[#CCCCCC]'><CustomThreeDotsLoader /></div>
-            ) : (
-              <button onClick={requestOtpHandler} className='min-w-25 text-xs bg-(--primary) py-2 px-4 rounded-md text-white whitespace-nowrap'>Request OTP</button>
-            )
-          }
-        </div>
+
+            <div className='flex justify-between items-end gap-2 py-1'>
+              <div className="w-full flex flex-col gap-1">
+                <label htmlFor="Login-email" className="font-medium text-xs md:text-sm">Email Address*</label>
+                <div className='flex justify-between flex-row  border border-[#CCCCCC] items-center rounded-md py-1 px-3'>
+                  <input
+                    type='text'
+                    value={userEmail}
+                    placeholder="Enter Email"
+                    // disabled={true}
+                    onChange={(e) => setUserEmail(e.target.value)}
+                    className="w-full outline-none border-none placeholder:text-[#CCCCCC] placeholder:text-sm"
+                  />
+                </div>
+              </div>
+              {
+                sendOtpLoading ? (
+                  <div className='min-w-25 flex justify-center items-center text-xs py-2.75 px-4 rounded-md whitespace-nowrap border border-[#CCCCCC]'><CustomThreeDotsLoader /></div>
+                ) : (
+                  <button
+                    disabled={!userEmail}
+                    onClick={requestOtpHandler}
+                    className="min-w-25 text-xs bg-(--primary) py-2 px-4 rounded-md text-white whitespace-nowrap disabled:opacity-50 disabled:cursor-not-allowed"
+                  >
+                    Request OTP
+                  </button>)
+              }
+            </div>
+          </>
         )}
         {
           requestedOtp && (
-            <div className='space-y-4 pb-10'>
-              <div className="flex items-center gap-3 my-5">
-                <div className="flex-1 h-px bg-gray-200" />
-                <span className="text-xs font-medium text-gray-400 whitespace-nowrap">
-                  Enter the 6-digit code below has sent to this email <span className='text-(--primary)'>{userEmail}</span>
-                </span>
-                <div className="flex-1 h-px bg-gray-200" />
+            <>
+              <div className='space-y-1'>
+                {/* <h2 className='text-lg font-semibold text-(--primary)'>Verify your identity</h2> */}
+                {/* <p className='text-sm text-[#424754]'>Enter received OTP.</p> */}
               </div>
-              <div className='flex justify-center items-center'>
-                <OtpInput onComplete={setOtp} />
+
+              <div className='space-y-4 pb-10'>
+                <div className="flex items-center gap-3 my-5">
+                  <div className="flex-1 h-px bg-gray-200" />
+                  <span className="text-xs font-medium text-gray-400 whitespace-nowrap">
+                    Enter the 6-digit OTP below has sent to this email <span className='text-(--primary)'>{userEmail}</span>
+                  </span>
+                  <div className="flex-1 h-px bg-gray-200" />
+                </div>
+                <div className='flex justify-center items-center'>
+                  <OtpInput onComplete={setOtp} />
+                </div>
+                {
+                  verifyOtpLoading ? (
+                    <div className={`border border-[#CCCCCC] w-full text-xs py-2.75 px-4 rounded-2xl whitespace-nowrap`}><CustomThreeDotsLoader /></div>
+                  ) : (
+                    <button onClick={verifyLoginOtpHandler} disabled={otp.length !== 6} className={`border border-[#CCCCCC] w-full text-xs ${otp.length === 6 ? "bg-(--primary) text-white" : "text-gray-400"} py-2 px-4 rounded-2xl  whitespace-nowrap`}>Verify OTP</button>
+                  )
+                }
               </div>
-              {
-                verifyOtpLoading ? (
-                  <div className={`border border-[#CCCCCC] w-full text-xs py-2.75 px-4 rounded-2xl whitespace-nowrap`}><CustomThreeDotsLoader /></div>
-                ) : (
-                  <button onClick={verifyLoginOtpHandler} disabled={otp.length !== 6} className={`border border-[#CCCCCC] w-full text-xs ${otp.length === 6 ? "bg-(--primary) text-white" : "text-gray-400"} py-2 px-4 rounded-2xl  whitespace-nowrap`}>Verify OTP</button>
-                )
-              }
-            </div>
+            </>
           )
         }
 
@@ -183,6 +205,7 @@ function OtpInput({ length = 6, onComplete }) {
           inputMode="numeric"
           maxLength={1}
           value={digit}
+          autoFocus={index === 0}
           onChange={(e) => handleChange(e, index)}
           onKeyDown={(e) => handleKeyDown(e, index)}
           onPaste={handlePaste}

@@ -88,36 +88,51 @@ const TwoFactorEmailOTP = () => {
     }
 
     return (
-        <div className='space-y-4'>
-            <div className='space-y-1.5'>
+        <div className='space-y-2'>
+            {/* <div className='space-y-1.5'>
                 <h2 className='text-2xl font-semibold text-(--primary)'>Verify your identity</h2>
                 <p className='text-sm text-[#424754]'>Request an OTP to verify email and securely access your account.</p>
-            </div>
+            </div> */}
             <div className='mb-10'>
-              { !requestedOtp && <div className='flex justify-between items-end gap-2 py-1'>
-                    <div className="w-full flex flex-col gap-1">
-                        <label htmlFor="Login-email" className="font-medium text-xs md:text-sm">Email Address*</label>
-                        <div className='flex justify-between bg-gray-200 flex-row cursor-not-allowed border border-[#CCCCCC] items-center rounded-md py-1 px-3'>
-                            <input
-                                type='text'
-                                value={userEmail}
-                                placeholder="Enter Email"
-                                disabled={true}
-                                className="w-full cursor-not-allowed outline-none border-none placeholder:text-[#CCCCCC] placeholder:text-sm"
-                            />
+                {!requestedOtp && (
+                    <div className='space-y-3'>
+                        <div className='space-y-1'>
+                            <h2 className='text-2xl font-semibold text-(--primary)'>Verify your identity</h2>
+                            <p className='text-sm text-[#424754]'>Request an OTP to verify email and securely access your account.</p>
+                        </div>
+                        <div className='flex justify-between items-end gap-2 py-1'>
+
+                            <div className="w-full flex flex-col gap-1">
+                                <label htmlFor="Login-email" className="font-medium text-xs md:text-sm">Email Address*</label>
+                                <div className='flex justify-between bg-gray-200 flex-row cursor-not-allowed border border-[#CCCCCC] items-center rounded-md py-1 px-3'>
+                                    <input
+                                        type='text'
+                                        value={userEmail}
+                                        placeholder="Enter Email"
+                                        disabled={true}
+                                        className="w-full cursor-not-allowed outline-none border-none placeholder:text-[#CCCCCC] placeholder:text-sm"
+                                    />
+                                </div>
+                            </div>
+                            {
+                                sendOtpLoading ? (
+                                    <div className='min-w-25 flex justify-center items-center text-xs py-2.75 px-4 rounded-md whitespace-nowrap border border-[#CCCCCC]'><CustomThreeDotsLoader /></div>
+                                ) : (
+                                    <button onClick={requestOtpHandler} className='min-w-25 text-xs bg-(--primary) py-2 px-4 rounded-md text-white whitespace-nowrap'>Request OTP</button>
+                                )
+                            }
                         </div>
                     </div>
-                    {
-                        sendOtpLoading ? (
-                            <div className='min-w-25 flex justify-center items-center text-xs py-2.75 px-4 rounded-md whitespace-nowrap border border-[#CCCCCC]'><CustomThreeDotsLoader /></div>
-                        ) : (
-                            <button onClick={requestOtpHandler} className='min-w-25 text-xs bg-(--primary) py-2 px-4 rounded-md text-white whitespace-nowrap'>Request OTP</button>
-                        )
-                    }
-                </div>}
+                )
+                }
                 {
                     requestedOtp && (
                         <div className='space-y-4 pb-10 mt-2'>
+                            <div className='space-y-1'>
+                                <h2 className='text-2xl font-semibold text-(--primary)'>Verify your identity</h2>
+                                <p className='text-sm text-[#424754]'>Verify OTP to securely access your account.</p>
+                            </div>
+                            {/* <p className='text-base '>Verify OTP to securely access your account.</p> */}
                             <div className="flex items-center gap-3 my-5">
                                 <div className="flex-1 h-px bg-gray-200" />
                                 <span className="text-[11px] font-medium text-gray-400 whitespace-nowrap">
@@ -186,6 +201,7 @@ function OtpInput({ length = 6, onComplete }) {
                     inputMode="numeric"
                     maxLength={1}
                     value={digit}
+                    autoFocus={index === 0}
                     onChange={(e) => handleChange(e, index)}
                     onKeyDown={(e) => handleKeyDown(e, index)}
                     onPaste={handlePaste}

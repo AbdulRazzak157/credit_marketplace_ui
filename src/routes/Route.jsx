@@ -47,6 +47,7 @@ import LenderLeadMetrics from "../features/lenders/LenderLeadMetrics";
 import TwoFactorEmailOTP from "../pages/auth/TwoFactorEmailOTP";
 import ResetPassword from "../pages/auth/ResetPassword";
 import { userPermissions } from "../constants/subadminPermissions";
+import AddSubAdmin from "../features/staff/AddSubAdmin";
 
 export const router = createBrowserRouter([
     {
@@ -56,8 +57,8 @@ export const router = createBrowserRouter([
                 path: '/',
                 element: <UserLayout />,
                 children: [
-                    { path: "/", element: <Overview /> },
-                    { path: "dashboard", element: <Dashboard /> },
+                    // { path: "/", element: <Overview /> },
+                    { path: "/", element: <Dashboard /> },
                     {
                         path: "leads",
                         element: (
@@ -101,6 +102,10 @@ export const router = createBrowserRouter([
                             {
                                 path: "",
                                 element: <SubAdminManagement />
+                            },
+                            {
+                                path: "add",
+                                element: <AddSubAdmin />
                             },
                             {
                                 path: "view/:id",
@@ -190,7 +195,7 @@ export const router = createBrowserRouter([
                                                 path: "view/:employeeId/edit",
                                                 element: (
                                                     <ProtectedPage permission={userPermissions.LENDER_SUPPORT.EDIT_LENDER_SUPPORT} >
-                                                        <AddLenderSupport />
+                                                        <EditLenderSupport />
                                                     </ProtectedPage>
                                                 ),
 

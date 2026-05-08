@@ -7,7 +7,7 @@ import DataTableBase from '../../components/DataTableBase'
 import { leadStatusColors, normalizeSentence, truncateString } from '../../helpers'
 import moment from 'moment'
 import ActionButton from '../../components/buttons/ActionButton'
-import { Link, useOutletContext, useParams } from 'react-router-dom'
+import { Link, NavLink, useOutletContext, useParams } from 'react-router-dom'
 import { useAuth } from '../../context/AuthContext'
 import API_URL from '../../api/apiConfig'
 import { useQuery } from '@tanstack/react-query'
@@ -224,7 +224,12 @@ const StaffView = () => {
             selector: (row) => (
 
                 <div className={`text-sm ${row?.lenderId && "text-blue-600 underline cursor-pointer"} `} title="LDR334455555515" >
-                    {row?.lenderId || "N/A"}
+                    {
+                        row?.lenderId ? (
+                            <Link to={`/lenders/view/${row?.lenderId}`}>
+                                {row?.lenderId}
+                            </Link>
+                        ) : "N/A"}
                 </div >
             ),
             center: "true",
@@ -234,7 +239,12 @@ const StaffView = () => {
             name: "Lender Product ID",
             selector: (row) => (
                 <div className={`text-sm ${row?.lenderProductId && "text-blue-600 underline cursor-pointer"} `} title="LPR-PL-20260312-29D9F71D">
-                    {row?.lenderProductId || "N/A"}
+                    {
+                        row?.lenderProductId ? (
+                            <Link to={`/products/${row?.lenderProductId}`}>
+                                {row?.lenderProductId}
+                            </Link>
+                        ) : "N/A"}
                 </div>
             ),
             center: "true",
@@ -254,7 +264,7 @@ const StaffView = () => {
             name: "Action",
             cell: (row) => (
                 <div className="flex gap-5 items-center ">
-                    <Link to={`view/${row?.leadId}`}>
+                    <Link to={`/leads/view/${row?.leadId}`}>
                         <ActionButton type="view" />
                     </Link>
                 </div>

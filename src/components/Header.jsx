@@ -6,7 +6,16 @@ import { useAuth } from '../context/AuthContext'
 
 const Header = ({ onMenuClick }) => {
 
-    const { userProfile } = useAuth();    
+    const { userProfile } = useAuth();
+
+    function nameTagInitials(name) {
+        let initials = "";
+        name?.split(" ")?.forEach((str) => {
+            initials += str[0];
+        });
+
+        return initials?.slice(0, 2)?.toUpperCase();
+    }
 
     return (
         <div className='relative'>
@@ -25,7 +34,11 @@ const Header = ({ onMenuClick }) => {
                 </div>
                 <div className='flex justify-end items-center gap-4 sm:gap-8'>
                     <div className='max-lg:hidden'>
-                        <QuickActions />
+                        {
+                            userProfile?.userRole !== "EXECUTIVE" && (
+                                <QuickActions />
+                            )
+                        }
                     </div>
                     <div>
                         <button className='h-9 sm:h-10 w-9 sm:w-10 bg-[#F3F3F3] flex items-center justify-center rounded-full'>
@@ -38,7 +51,7 @@ const Header = ({ onMenuClick }) => {
                             <div className="text-[#64646E] text-xs">{userProfile?.userCustomId}</div>
                         </div>
                         <h1 className='flex justify-center items-center text-white bg-(--primary) w-9 h-9 sm:w-10 sm:h-10 rounded-full capitalize'>
-                            <span>R</span>
+                            <span>{nameTagInitials(userProfile?.userName)}</span>
                         </h1>
                     </div>
                 </div>

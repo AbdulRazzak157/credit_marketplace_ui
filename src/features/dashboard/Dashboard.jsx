@@ -1,9 +1,9 @@
 import React from 'react'
-import AccessRestricted from '../../pages/AccessRestricted'
+import ComingSoon from '../../components/ComingSoon'
 
 const Dashboard = () => {
   return (
-    <div><AccessRestricted /></div>
+    <div><ComingSoon /></div>
   )
 }
 

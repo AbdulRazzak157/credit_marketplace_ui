@@ -189,6 +189,7 @@ import { useParams } from 'react-router-dom'
 import { useAuth } from '../../../context/AuthContext'
 import API_URL from '../../../api/apiConfig'
 import CustomCircleLoader from '../../../shared/CustomCircleLoader'
+import { normalizeSentence } from '../../../helpers'
 
 const colorPalette = [
   "bg-blue-500",
@@ -332,7 +333,7 @@ const MatchedProducts = () => {
                     {/* TAGS */}
                     <div className="flex gap-2 mt-2 flex-wrap">
                       <span className="text-xs px-2 py-1 bg-gray-100 rounded-full">
-                        {product.lenderProductType}
+                        {normalizeSentence(product?.lenderProductType)}
                       </span>
                       <span className="text-xs px-2 py-1 bg-blue-100 text-blue-600 rounded-full">
                         Up to {product.policies.maxTenureInMonths}M

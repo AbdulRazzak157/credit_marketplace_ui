@@ -127,9 +127,11 @@ const LenderSupports = () => {
     {
       name: "Lender ID",
       selector: (row) => (
-        <div className='text-sm text-blue-600 underline'>
-          {row?.customId}
-        </div>
+        <Link to={`/lenders/view/${id}/support/view/${row?.customId}`}>
+          <div className='text-sm text-blue-600 underline'>
+            {row?.customId}
+          </div>
+        </Link>
       ),
       center: "true",
       width: "170px"

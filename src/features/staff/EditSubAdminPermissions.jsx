@@ -40,7 +40,7 @@ const EditSubAdminPermissions = () => {
 
     const getSpecificStaffDetails = async () => {
         try {
-            const token = "";
+            const token = await getAccessToken();
             const response = await fetch(`${API_URL.subAdminManagement.getSpecificStaffAdmin(id)}`, {
                 method: "GET",
                 headers: {
@@ -162,7 +162,7 @@ const EditSubAdminPermissions = () => {
             // console.log("Result from the OnSave Permissions: ", result);
             toast.success("Staff Updated Successfully");
 
-            navigate('/sub-admins');
+            // navigate('/sub-admins');
         } catch (error) {
             console.log("Error in Saving Edit staff permissions : ", error?.message);
         }
@@ -213,7 +213,7 @@ const EditSubAdminPermissions = () => {
                         <input
                             id="staffMobile"
                             type="text"
-                            value={StaffProfile.mobileNumber}
+                            value={StaffProfile?.mobileNumber}
                             disabled={true}
                             placeholder="Enter Mobile"
                             className='outline-none border border-gray-300 px-4 py-2 rounded-md bg-gray-200 cursor-not-allowed'
@@ -224,7 +224,7 @@ const EditSubAdminPermissions = () => {
                         <input
                             id="staffEmail"
                             type="text"
-                            value={StaffProfile.email}
+                            value={StaffProfile?.email}
                             disabled={true}
                             placeholder="Enter Email"
                             className='outline-none border border-gray-300 px-4 py-2 rounded-md bg-gray-200 cursor-not-allowed'

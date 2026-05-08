@@ -52,7 +52,7 @@ export function UpdateLeadStatusModal({ currentStatus, refetch, onClose }) {
             });
             if (!response.ok) {
                 const errorResult = await response.json();
-                throw new Error(errorResult?.message);
+                throw new Error(errorResult?.response?.message);
             }
             const result = await response.json();
 
@@ -63,6 +63,7 @@ export function UpdateLeadStatusModal({ currentStatus, refetch, onClose }) {
             onClose();
             setIsLoading(false);
         } catch (error) {
+            toast.error(error?.message);
             console.log("Error in Update Status Modal : ", error?.message);
             setIsLoading(false);
         }

@@ -6,13 +6,13 @@ export const type = "DEV";
 let API_BASE_URL;
 
 if (type === 'DEV') {
-    API_BASE_URL = "http://localhost:4000";
+    // API_BASE_URL = "http://localhost:4000";
 
     // hari
     // API_BASE_URL = "https://b3fn5jvm-4000.inc1.devtunnels.ms"
 
     // razzak
-    // API_BASE_URL = "https://57gph04g-4000.inc1.devtunnels.ms";
+    API_BASE_URL = "https://57gph04g-4000.inc1.devtunnels.ms";
 }
 
 
@@ -28,11 +28,12 @@ const API_URL = {
     },
 
     profile: {
-        getUserProfile: `${API_BASE_URL}/api/v1/users/profile`
+        getUserProfile: `${API_BASE_URL}/api/v1/users/profile`,
+        updateUserPassword: `${API_BASE_URL}/api/v1/users/update-password`,
     },
 
     subAdminManagement: {
-        addStaffAdmin: `${API_BASE_URL}/api/admin/sub-admins`,
+        addSubAdmin: `${API_BASE_URL}/api/admin/sub-admins`,
         getSubAdminList: `${API_BASE_URL}/api/admin/sub-admins`,
         getSpecificStaffAdmin: (id) => `${API_BASE_URL}/api/admin/sub-admins/${id}`,
         updateStaffAdminStatus: (id) => `${API_BASE_URL}/api/admin/sub-admins/${id}/status`,

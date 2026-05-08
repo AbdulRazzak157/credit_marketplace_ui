@@ -134,11 +134,13 @@ const LeadOverviewParent = () => {
                         <div className='flex items-center gap-2'>
                             {leadData.status !== "DISBURSED" &&
                                 <>
-                                    <div onClick={() => setIsStatusModalOpen(true)} className='flex items-center gap-x-1.5 py-1 px-3 rounded-lg bg-gray-100 border border-gray-300 cursor-pointer'>
-                                        <Icon icon="lets-icons:edit-fill" width="16" height="16" />
-                                        <span className='text-xs font-semibold text-[#232323]'>Update Status</span>
-                                    </div>
-                                    <HasPermission permission={userPermissions.LEADS_MANAGEMENT.ASSIGN_LEADS} >
+                                    <HasPermission permission={userPermissions.LEADS.UPDATE_LEAD_STATUS} >
+                                        <div onClick={() => setIsStatusModalOpen(true)} className='flex items-center gap-x-1.5 py-1 px-3 rounded-lg bg-gray-100 border border-gray-300 cursor-pointer'>
+                                            <Icon icon="lets-icons:edit-fill" width="16" height="16" />
+                                            <span className='text-xs font-semibold text-[#232323]'>Update Status</span>
+                                        </div>
+                                    </HasPermission>
+                                    <HasPermission permission={userPermissions.LEADS.ASSIGN_LEADS} >
                                         <div onClick={() => setIsAssignModalOpen(true)} className='flex items-center gap-x-1.5 py-1 px-3 rounded-lg bg-(--primary) cursor-pointer'>
                                             <span className='text-white'>
                                                 <Icon icon="mynaui:user-solid" width="13" height="13" />
