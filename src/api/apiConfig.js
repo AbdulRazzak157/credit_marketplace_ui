@@ -1,18 +1,20 @@
+import config from "./envConfig";
 
 
 export const type = "DEV";
 // export const type = "PROD";
 
+
 let API_BASE_URL;
 
 if (type === 'DEV') {
-    // API_BASE_URL = "http://localhost:4000";
+    API_BASE_URL = config.VITE_API_URL;
 
     // hari
     // API_BASE_URL = "https://b3fn5jvm-4000.inc1.devtunnels.ms"
 
     // razzak
-    API_BASE_URL = "https://57gph04g-4000.inc1.devtunnels.ms";
+    // API_BASE_URL = "https://57gph04g-4000.inc1.devtunnels.ms";
 }
 
 

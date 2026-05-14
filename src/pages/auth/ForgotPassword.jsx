@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import API_URL from '../../api/apiConfig';
 import CustomThreeDotsLoader from '../../shared/CustomThreeDotsLoader';
 import { toast } from 'react-toastify';
+import { Icon } from '@iconify/react';
 
 const ForgotPassword = () => {
 
@@ -124,6 +125,10 @@ const ForgotPassword = () => {
                     Request OTP
                   </button>)
               }
+            </div>
+            <div onClick={() => navigate("/login")} className='text-xs font-semibold hover:underline text-(--primary) cursor-pointer place-items-center mt-4'>
+             
+                <div>Back to Login</div>
             </div>
           </>
         )}

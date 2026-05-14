@@ -1,3 +1,12 @@
+# Environment files — never commit these
+.env.development
+.env.production
+.env.local
+.env.*.local
+
+# Keep this — it's just defaults/comments, no secrets
+# .env
+
 # Logs
 logs
 *.log

@@ -113,8 +113,10 @@ const AddLenderProduct = () => {
     console.log("product data: ", data, { includePincode, excludePincode, includeCities, excludeCities, includeStates, excludeStates });
 
     if (!includePincodeList.length && !excludePincodeList.length && !includeCities.length && !excludeCities.length && !includeStates.length && !excludeStates.length) {
-      toast.error("Add Geo Rules");
-      return;
+      if (data?.defaultGeo !== "INCLUDE") {
+        toast.error("Add Geo Rules");
+        return;
+      }
     }
 
     try {
@@ -153,6 +155,7 @@ const AddLenderProduct = () => {
         includeStates: includeStates?.map((type) => type.value) || [],
         excludeStates: excludeStates?.map((type) => type.value) || []
       }
+      console.log("final payload for add lender product : ", payload);
 
       const token = await getAccessToken();
       const response = await fetch(`${API_URL.productManagement.addProduct(id)}`, {
@@ -176,8 +179,6 @@ const AddLenderProduct = () => {
       toast.success("Lender Product Added Successfully");
       reset();
       navigate(`/lenders/view/${id}/products`);
-
-      await new Promise(resolve => setTimeout(resolve, 2000))
 
     } catch (error) {
       console.log("Error in add Lender Product : ", error?.message);
@@ -263,7 +264,8 @@ const AddLenderProduct = () => {
                 {...register("productUtm", {
                   required: "*UTM Link is required",
                   pattern: {
-                    value: /^(https?:\/\/)?(www\.)?[a-zA-Z0-9-]+\.[a-zA-Z]{2,}(\/.*)?$/,
+                    // Valid if URL has ANY of: utm_source, utm_medium, utm_campaign, oid, uid, lid, aff_sub
+                    value: /^(https?:\/\/)?(www\.)?[a-zA-Z0-9-]+(\.[a-zA-Z]{2,})+(\/[^\s?#]*)?(\?[^\s#]*)?(utm_source=[^&\s#]+|utm_medium=[^&\s#]+|utm_campaign=[^&\s#]+|oid=\d+|uid=\d+|lid=\d+|aff_sub=[^&\s#{}]*(\{[^}]*\})?)([&#][^\s#]*)?$/,
                     message: "Enter a valid URL",
                   },
                 })}
@@ -328,11 +330,12 @@ const AddLenderProduct = () => {
               <label htmlFor="product-income" className='text-gray-600 text-sm sm:text-base'>Min Income*</label>
               <input
                 type="text"
+                defaultValue={0}
                 placeholder="Enter Income"
                 {...register("productMinIncome", {
                   required: "*Income is required",
                   pattern: {
-                    value: /^[1-9][0-9]*$/,
+                    value: /^(0|[1-9][0-9]*)$/,
                     message: "Enter a valid income",
                   }
                 })}
@@ -441,6 +444,7 @@ const AddLenderProduct = () => {
               <label htmlFor="product-activeLoans" className='text-gray-600 text-sm sm:text-base'>Max Active Loans*</label>
               <input
                 type="text"
+                defaultValue={0}
                 placeholder="Enter Active Loans"
                 {...register("productActiveLoans", {
                   required: "*Max Active Loans is required",
@@ -459,6 +463,7 @@ const AddLenderProduct = () => {
               <label htmlFor="product-bureauScore" className='text-gray-600 text-sm sm:text-base'>Min Bureau Score*</label>
               <input
                 type="text"
+                defaultValue={0}
                 placeholder="Enter Bureau Score"
                 {...register("productBureauScore", {
                   required: "*Bureau Score is required",
@@ -467,8 +472,9 @@ const AddLenderProduct = () => {
                     message: "Only numbers allowed",
                   },
                   validate: (value) =>
+                    Number(value) === 0 ||
                     (Number(value) >= 300 && Number(value) <= 900) ||
-                    "Enter score between 300 and 900",
+                    "Enter score between 0 or 300-900",
                 })}
                 className='outline-none border border-gray-300 px-4 py-2 rounded-md'
               />
@@ -481,6 +487,7 @@ const AddLenderProduct = () => {
               <div className='relative w-full'>
                 <input
                   type="text"
+                  defaultValue={0}
                   placeholder="Enter FOIR"
                   {...register("productFoir", {
                     required: "*FOIR is required",
@@ -590,8 +597,9 @@ const AddLenderProduct = () => {
                     {...field}
                     options={[
                       { label: "SALARIED", value: "SALARIED" },
-                      { label: "SELF_EMPLOYED", value: "SELF_EMPLOYED" },
+                      { label: "SELF EMPLOYED", value: "SELF_EMPLOYED" },
                       { label: "RETIRED", value: "RETIRED" },
+                      { label: "STUDENT", value: "STUDENT" },
                     ]}
                     placeholder="Ex: SALARIED"
                     // styles={reactSelectCustomStyles}
@@ -619,6 +627,7 @@ const AddLenderProduct = () => {
               <label htmlFor="product-dpd30" className='text-gray-600 text-sm sm:text-base'>Max DPD 30*</label>
               <input
                 type="number"
+                defaultValue={0}
                 placeholder="Enter DPD 30"
                 {...register("productDpd30", {
                   required: "*DPD 30 is required",
@@ -637,6 +646,7 @@ const AddLenderProduct = () => {
               <label htmlFor="product-dpd60" className='text-gray-600 text-sm sm:text-base'>Max DPD 60*</label>
               <input
                 type="number"
+                defaultValue={0}
                 placeholder="Enter DPD 60"
                 {...register("productDpd60", {
                   required: "*DPD 60 is required",
@@ -655,6 +665,7 @@ const AddLenderProduct = () => {
               <label htmlFor="product-dpd90" className='text-gray-600 text-sm sm:text-base'>Max DPD 90*</label>
               <input
                 type="number"
+                defaultValue={0}
                 placeholder="Enter DPD 90"
                 {...register("productDpd90", {
                   required: "*DPD 90 is required",
@@ -672,6 +683,7 @@ const AddLenderProduct = () => {
             <div className='flex flex-col gap-1'>
               <label htmlFor="product-income" className='text-gray-600 text-sm sm:text-base'>Last 30 days Enquiries*</label>
               <input
+                defaultValue={0}
                 type="number"
                 placeholder="Enter enquires"
                 {...register("product30daysEnquiries", {
